@@ -1,0 +1,54 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8e0e0;
+    /* Color de fondo rosa claro */
+    color: #444;
+    /* Color de texto oscuro */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    /* Color de fondo blanco */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+}
+
+.poem {
+    margin-top: 20px;
+}
+
+.poem p {
+    margin: 8px 0;
+    /* Reducir la separación entre versos */
+    line-height: 1.5;
+}
+
+.poem p:nth-child(4n) {
+    margin-bottom: 20px;
+    /* Aumentar la separación después de cada estrofa */
+}
+
+h1 {
+    text-align: center;
+    color: #c63c3c;
+    /* Color rojo oscuro para el título */
+}
+
+.boton {
+    display: block;
+    width: 150px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 20px auto;
+}
