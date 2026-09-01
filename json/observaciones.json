@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "producto": 1,
+    "precio": 1000,
+    "descuento": 0,
+    "fecha": "01/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  },
+  {
+    "id": 2,
+    "producto": 2,
+    "precio": 2000,
+    "descuento": 0,
+    "fecha": "02/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  },
+  {
+    "id": 3,
+    "producto": 3,
+    "precio": 15000,
+    "descuento": 0,
+    "fecha": "03/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  },
+  {
+    "id": 4,
+    "producto": 4,
+    "precio": 1000,
+    "descuento": 200,
+    "fecha": "04/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  },
+  {
+    "id": 5,
+    "producto": 5,
+    "precio": 5000,
+    "descuento": 250,
+    "fecha": "05/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  },
+  {
+    "id": 6,
+    "producto": 6,
+    "precio": 6900,
+    "descuento": 1380,
+    "fecha": "06/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  },
+  {
+    "id": 7,
+    "producto": 1,
+    "precio": 1100,
+    "descuento": 255,
+    "fecha": "07/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  },
+  {
+    "id": 8,
+    "producto": 2,
+    "precio": 2100,
+    "descuento": 0,
+    "fecha": "08/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  },
+  {
+    "id": 9,
+    "producto": 3,
+    "precio": 17000,
+    "descuento": 950,
+    "fecha": "09/07/2026",
+    "local": 2,
+    "marca": null,
+    "medida": null
+  }
+]

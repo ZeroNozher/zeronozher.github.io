@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nombre": "Leche",
+    "categoria": 1,
+    "imagen": "./img/leche.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Harina",
+    "categoria": 3,
+    "imagen": "./img/harina.jpg"
+  },
+  {
+    "id": 3,
+    "nombre": "Queso",
+    "categoria": 1,
+    "imagen": "./img/queso.jpg"
+  },
+  {
+    "id": 4,
+    "nombre": "Arroz",
+    "categoria": 3,
+    "imagen": "./img/arroz.jpg"
+  },
+  {
+    "id": 5,
+    "nombre": "Té",
+    "categoria": 3,
+    "imagen": "./img/te.jpg"
+  },
+  {
+    "id": 6,
+    "nombre": "Aceite",
+    "categoria": 3,
+    "imagen": "./img/aceite.jpg"
+  }
+]

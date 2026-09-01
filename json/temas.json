@@ -1,0 +1,33 @@
+{
+  "temaPorDefecto": "rosa",
+  "temas": {
+    "magenta": {
+      "nombre": "Magenta",
+      "bg": "#202",
+      "surface": "#404",
+      "text": "#f0f",
+      "bg2img": "#fff"
+    },
+    "rosa": {
+      "nombre": "Rosa",
+      "bg": "#212",
+      "surface": "#424",
+      "text": "#f6f",
+      "bg2img": "#fff"
+    },
+    "azul": {
+      "nombre": "Azul",
+      "bg": "#022",
+      "surface": "#044",
+      "text": "#0ff",
+      "bg2img": "#fff"
+    },
+    "verde": {
+      "nombre": "Verde",
+      "bg": "#020",
+      "surface": "#030",
+      "text": "#0a0",
+      "bg2img": "#fff"
+    }
+  }
+}

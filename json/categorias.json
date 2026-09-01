@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "nombre": "Lácteos"
+  },
+  {
+    "id": 2,
+    "nombre": "Carnicería"
+  },
+  {
+    "id": 3,
+    "nombre": "Almacén"
+  },
+  {
+    "id": 4,
+    "nombre": "Avícola"
+  },
+  {
+    "id": 5,
+    "nombre": "Higiene"
+  },
+  {
+    "id": 6,
+    "nombre": "Frutas"
+  },
+  {
+    "id": 7,
+    "nombre": "Verduras"
+  }
+]

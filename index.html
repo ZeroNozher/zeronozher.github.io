@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base de conocimiento de precios</title>
+  <script>
+    (function () {
+      try {
+        var datos = JSON.parse(localStorage.getItem("bcp:v1"));
+        var colores = datos && datos.tema && datos.tema.colores;
+
+        if (colores) {
+          var raiz = document.documentElement.style;
+          raiz.setProperty("--bg", colores.bg);
+          raiz.setProperty("--surface", colores.surface);
+          raiz.setProperty("--text", colores.text);
+          raiz.setProperty("--bg2img", colores.bg2img);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/cards.css">
+  <link rel="stylesheet" href="./css/cards-edit.css">
+  <link rel="stylesheet" href="./css/history.css">
+  <link rel="stylesheet" href="./css/settings.css">
+  <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon">
+
+  <script type="module" src="./js/app.js" defer></script>
+</head>
+
+<body>
+  <button id="btn-settings" class="icon-button settings-trigger" aria-label="Abrir ajustes">⚙️</button>
+  <header class="topbar">
+    <h1>Base de conocimiento de precios</h1>
+  </header>
+
+  <main>
+
+    <!-- ===================================================== -->
+    <!-- Pantalla principal                                    -->
+    <!-- ===================================================== -->
+
+    <section id="home-screen" class="screen">
+
+      <div class="toolbar">
+
+        <input type="search" class="search" placeholder="Buscar producto..." maxlength="20">
+
+        <div id="update-actions">
+
+          <button id="btn-open-update">
+            Actualizar precios
+          </button>
+
+          <button id="btn-confirm-update" class="hidden" disabled>
+            Confirmar
+          </button>
+
+          <button id="btn-cancel-update" class="hidden">
+            Cancelar
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="filter-bar">
+
+        <details class="filter summary-filter hidden">
+          <summary></summary>
+          <div class="filter-menu summary-menu"></div>
+        </details>
+
+        <div class="active-filters"></div>
+
+        <details class="filter" id="price-filter">
+          <summary>Precio</summary>
+          <div class="filter-menu"></div>
+        </details>
+
+        <details class="filter" id="category-filter">
+          <summary>Categoría</summary>
+          <div class="filter-menu"></div>
+        </details>
+
+        <details class="filter" id="location-filter">
+          <summary>Local</summary>
+          <div class="filter-menu"></div>
+        </details>
+
+        <div class="select-wrapper">
+          <select id="sort-selector">
+            <option value="fecha-asc">Más recientes</option>
+            <option value="fecha-desc">Más antiguos</option>
+            <option value="precio-asc">Más baratos</option>
+            <option value="precio-desc">Más caros</option>
+            <option value="nombre-asc">Nombre A-Z</option>
+            <option value="nombre-desc">Nombre Z-A</option>
+          </select>
+        </div>
+
+      </div>
+
+      <section class="product-list"></section>
+
+    </section>
+  </main>
+  <div id="history-overlay" class="history-overlay hidden"></div>
+
+  <aside id="history-panel" class="history-panel hidden">
+
+    <div class="history-header">
+      <h2 class="history-title"></h2>
+      <button id="history-close" class="icon-button" aria-label="Cerrar historial">✕</button>
+    </div>
+
+    <div class="history-list"></div>
+
+  </aside>
+
+  <div id="settings-overlay" class="settings-overlay hidden"></div>
+
+  <aside id="settings-panel" class="settings-panel hidden">
+
+    <div class="settings-header">
+      <h2>Ajustes</h2>
+      <button id="settings-close" class="icon-button" aria-label="Cerrar ajustes">✕</button>
+    </div>
+
+    <div class="settings-body">
+
+      <nav class="settings-tabs">
+        <button class="settings-tab active" data-tab="general">Ajustes generales</button>
+        <button class="settings-tab" data-tab="marcas">Marcas</button>
+        <button class="settings-tab" data-tab="locales">Locales</button>
+        <button class="settings-tab" data-tab="categorias">Categorías</button>
+      </nav>
+
+      <div class="settings-content">
+
+        <section class="settings-panel-tab active" data-tab="general">
+          <fieldset>
+            <legend>Tema seleccionado</legend>
+            <div id="theme-options" class="theme-options"></div>
+          </fieldset>
+        </section>
+
+        <section class="settings-panel-tab" data-tab="marcas">
+          <fieldset>
+            <legend>Marcas</legend>
+            <div class="catalog-add">
+              <input type="text" id="marca-nuevo-input" placeholder="Nueva marca" maxlength="10">
+              <button id="marca-nuevo-btn">Agregar</button>
+            </div>
+            <div id="marca-lista" class="catalog-list"></div>
+          </fieldset>
+        </section>
+
+        <section class="settings-panel-tab" data-tab="locales">
+          <fieldset>
+            <legend>Locales</legend>
+            <div class="catalog-add">
+              <input type="text" id="local-nuevo-input" placeholder="Nuevo local" maxlength="10">
+              <button id="local-nuevo-btn">Agregar</button>
+            </div>
+            <div id="local-lista" class="catalog-list"></div>
+          </fieldset>
+        </section>
+
+        <section class="settings-panel-tab" data-tab="categorias">
+          <fieldset>
+            <legend>Categorías</legend>
+            <div class="catalog-add">
+              <input type="text" id="categoria-nuevo-input" placeholder="Nueva categoría" maxlength="10">
+              <button id="categoria-nuevo-btn">Agregar</button>
+            </div>
+            <div id="categoria-lista" class="catalog-list"></div>
+          </fieldset>
+        </section>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+</body>
+
+</html>

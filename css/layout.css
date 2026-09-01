@@ -1,0 +1,160 @@
+.topbar {
+  padding: 24px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--text);
+}
+
+.topbar h1 {
+  font-size: 1.5rem;
+}
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.search {
+  flex: 1;
+}
+
+.search::placeholder {
+  color: var(--text);
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.filter {
+  position: relative;
+}
+
+.filter summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--text);
+  border-radius: 8px;
+  background: var(--surface);
+  font: inherit;
+}
+
+.filter summary::-webkit-details-marker {
+  display: none;
+}
+
+.filter summary::after {
+  content: "▾";
+}
+
+.filter[open] summary::after {
+  content: "▴";
+}
+
+.filter-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 240px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--text);
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .15);
+  z-index: 100;
+}
+
+.filter-menu label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.summary-menu {
+  min-width: 300px;
+}
+
+.active-filter,
+.destructive-filter {
+  padding: 10px 12px;
+  border: 1px solid var(--text);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.destructive-filter {
+  width: 100%;
+  text-align: left;
+}
+
+.active-filter {
+  white-space: nowrap;
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1;
+}
+
+#price-filter,
+#category-filter,
+#location-filter,
+.select-wrapper {
+  flex-shrink: 0;
+}
+
+.select-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.select-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--text);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#sort-selector {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 32px;
+}
+
+#update-actions {
+  display: flex;
+  gap: 12px;
+  width: 200px;
+  flex-shrink: 0;
+}
+
+#update-actions button {
+  flex: 1;
+}
