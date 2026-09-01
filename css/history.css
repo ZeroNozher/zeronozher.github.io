@@ -72,3 +72,14 @@
 .delta-neutro {
   opacity: 0.6;
 }
+
+@media (max-width: 400px) {
+  .history-panel {
+    width: 100vw;
+  }
+
+  .history-row {
+    grid-template-columns: 70px 1fr auto;
+    font-size: 0.8rem;
+  }
+}

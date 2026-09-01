@@ -50,6 +50,7 @@
   display: flex;
   gap: 16px;
   flex: 1;
+  min-height: 0;
 }
 
 .settings-tabs {
@@ -63,7 +64,7 @@
 .settings-tab {
   text-align: left;
   border: 1px solid var(--text);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--bg);
 }
 
@@ -74,11 +75,13 @@
 
 .settings-content {
   flex: 1;
+  min-width: 0;
+  overflow-y: auto;
 }
 
 fieldset {
   border: 1px solid var(--text);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 14px;
 }
 
@@ -112,6 +115,7 @@ fieldset {
 
 .catalog-add input {
   flex: 1;
+  min-width: 0;
 }
 
 .catalog-list {
@@ -150,4 +154,28 @@ fieldset {
 .catalog-empty {
   opacity: 0.7;
   font-size: 0.9rem;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 700px) {
+  .settings-panel {
+    width: 100vw;
+  }
+
+  .settings-body {
+    flex-direction: column;
+  }
+
+  .settings-tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .settings-tab {
+    flex: 1 1 auto;
+    font-size: 0.85rem;
+    padding: 8px;
+  }
 }

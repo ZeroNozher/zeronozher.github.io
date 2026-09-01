@@ -25,6 +25,7 @@
 
 .filter-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
@@ -43,7 +44,7 @@
   gap: 8px;
   padding: 10px 12px;
   border: 1px solid var(--text);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   font: inherit;
 }
@@ -65,14 +66,15 @@
   top: calc(100% + 8px);
   left: 0;
   min-width: 240px;
+  max-width: 90vw;
   padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   background: var(--surface);
   border: 1px solid var(--text);
-  border-radius: 8px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, .15);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-menu);
   z-index: 100;
 }
 
@@ -85,13 +87,14 @@
 
 .summary-menu {
   min-width: 300px;
+  max-width: 90vw;
 }
 
 .active-filter,
 .destructive-filter {
   padding: 10px 12px;
   border: 1px solid var(--text);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   color: var(--text);
   font: inherit;
@@ -157,4 +160,46 @@
 
 #update-actions button {
   flex: 1;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 700px) {
+  .toolbar {
+    flex-wrap: wrap;
+  }
+
+  .search {
+    flex-basis: 100%;
+  }
+
+  #update-actions {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding: 16px;
+  }
+
+  .topbar h1 {
+    font-size: 1.2rem;
+  }
+
+  .filter-bar {
+    gap: 8px;
+  }
+
+  #price-filter,
+  #category-filter,
+  #location-filter,
+  .select-wrapper {
+    flex: 1 1 auto;
+  }
+
+  .select-wrapper select,
+  .filter summary {
+    width: 100%;
+  }
 }
