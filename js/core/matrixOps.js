@@ -89,15 +89,15 @@ export function aplicarBinaria(id, a, b) {
   if (id === 'producto') return multiplicar(a, b);
   return a.clone();
 }
-
 /**
- * Cuenta de cada celda, partida en tokens.
+ * Cuenta de cada celda, partida en líneas y cada línea en tokens.
  *
- * Sin operación elegida R es A, así que el "procedimiento" es A tal cual:
- * un solo token de tipo 'a'. Así la matriz P nunca queda vacía y el color
- * cuenta por sí solo qué está pasando.
+ * Línea 1: el primer término solo. Líneas siguientes: operador + término.
+ * Última línea: "= resultado". En desktop las líneas se muestran en una
+ * sola fila (ver CSS); en mobile se apilan una debajo de la otra.
  *
- * @returns {Array<Array<Array<{tipo: string, texto: string}>>>}
+ * @returns {Array<Array<Array<Array<{tipo:string, texto:string}>>>>}
+ *   filas → columnas → líneas → tokens
  */
 export function explicarBinaria(id, a, b) {
   if (id === 'suma' || id === 'resta') {
@@ -105,11 +105,9 @@ export function explicarBinaria(id, a, b) {
     const resultado = id === 'suma' ? sumar(a, b) : restar(a, b);
     return a.filas.map((fila, i) =>
       fila.map((_, j) => [
-        token('a', escribir(a.get(i, j))),
-        token('op', ` ${signo} `),
-        token('b', escribir(b.get(i, j))),
-        token('op', ' = '),
-        token('r', resultado.get(i, j).toString()),
+        [token('a', escribir(a.get(i, j)))],
+        [token('op', `${signo} `), token('b', escribir(b.get(i, j)))],
+        [token('op', '= '), token('r', resultado.get(i, j).toString())],
       ])
     );
   }
@@ -118,20 +116,21 @@ export function explicarBinaria(id, a, b) {
     const resultado = multiplicar(a, b);
     return a.filas.map((fila, i) =>
       fila.map((_, j) => {
-        const tokens = [];
+        const lineas = [];
         for (let k = 0; k < a.columnas; k += 1) {
-          if (k > 0) tokens.push(token('op', ' + '));
-          tokens.push(
+          const prefijo = k === 0 ? [] : [token('op', '+ ')];
+          lineas.push([
+            ...prefijo,
             token('a', escribir(a.get(i, k))),
             token('op', '·'),
-            token('b', escribir(b.get(k, j)))
-          );
+            token('b', escribir(b.get(k, j))),
+          ]);
         }
-        tokens.push(token('op', ' = '), token('r', resultado.get(i, j).toString()));
-        return tokens;
+        lineas.push([token('op', '= '), token('r', resultado.get(i, j).toString())]);
+        return lineas;
       })
     );
   }
 
-  return a.filas.map((fila, i) => fila.map((_, j) => [token('a', a.get(i, j).toString())]));
+  return a.filas.map((fila, i) => fila.map((_, j) => [[token('a', a.get(i, j).toString())]]));
 }

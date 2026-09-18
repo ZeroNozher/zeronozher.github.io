@@ -455,6 +455,17 @@
   padding: 0 var(--esp-2);
   font-size: var(--tam-celda-proc);
   letter-spacing: -0.01em;
+}
+
+.celda--procedimiento .celda__valor {
+  display: flex;
+  align-items: baseline;
+  gap: var(--esp-1);
+  white-space: pre;
+}
+
+.procedimiento__linea {
+  display: inline-flex;
   white-space: pre;
 }
 
@@ -563,6 +574,30 @@
 
   .matriz--procedimiento {
     width: 100%;
+  }
+
+  .matriz--procedimiento .matriz__grilla {
+    grid-template-columns: repeat(var(--columnas), var(--celda-ancho-proc-movil, 100px));
+  }
+
+  .celda--procedimiento {
+    height: auto;
+    min-height: var(--celda-alto-proc);
+    padding: var(--esp-2);
+    align-items: flex-start;
+  }
+
+  .celda--procedimiento .celda__valor {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .matriz--procedimiento .matriz__etiqueta-fila {
+    height: auto;
+    min-height: var(--celda-alto-proc);
+    align-items: flex-start;
+    padding-top: var(--esp-2);
   }
 }
 

@@ -1,3 +1,13 @@
+/** Texto plano de una línea, para comparar y para medir. */
+function lineaATexto(linea) {
+  return linea.map((t) => t.texto).join('');
+}
+
+/** Texto plano de toda la celda (todas sus líneas), para detectar cambios. */
+function celdaATexto(lineas) {
+  return lineas.map(lineaATexto).join(' ');
+}
+
 /**
  * Vista del procedimiento.
  *
@@ -10,11 +20,7 @@
  */
 
 const DURACION_SALIDA = 170; // ms — igual que en matrixView.js
-
-/** Texto plano de una celda, para comparar y para medir. */
-function aTexto(tokens) {
-  return tokens.map((t) => t.texto).join('');
-}
+const PISO_LINEA_MOVIL = 6;
 
 export class ProcedureView {
   /**
@@ -68,7 +74,7 @@ export class ProcedureView {
         const celda = document.createElement('div');
         celda.className = 'celda celda--procedimiento';
 
-        const valor = document.createElement('span');
+        const valor = document.createElement('div');
         valor.className = 'celda__valor';
         celda.appendChild(valor);
 
@@ -109,15 +115,21 @@ export class ProcedureView {
   }
 
   ajustarAncho(filas) {
-    const largo = Math.max(
+    const celdas = filas.flatMap((fila) => fila); // una entrada por celda: sus líneas
+
+    const anchoTotal = Math.max(
       this.minCaracteres,
-      ...filas.flat().map((tokens) => aTexto(tokens).length)
+      ...celdas.map((lineas) => celdaATexto(lineas).length)
     );
-    // La tipografía es monoespaciada, así que 1ch mide exactamente un carácter.
-    this.grilla.style.setProperty('--celda-ancho-proc', `calc(${largo}ch + var(--esp-4))`);
+    const anchoLinea = Math.max(
+      PISO_LINEA_MOVIL,
+      ...celdas.flatMap((lineas) => lineas.map((l) => lineaATexto(l).length))
+    );
+
+    this.grilla.style.setProperty('--celda-ancho-proc', `calc(${anchoTotal}ch + var(--esp-4))`);
+    this.grilla.style.setProperty('--celda-ancho-proc-movil', `calc(${anchoLinea}ch + var(--esp-4))`);
   }
 
-  /** @param {Array<Array<Array<{tipo: string, texto: string}>>>} filas */
   setFilas(filas) {
     const anterior = this.filas;
     this.filas = filas;
@@ -125,24 +137,29 @@ export class ProcedureView {
     this.ajustarAncho(filas);
 
     filas.forEach((fila, i) => {
-      fila.forEach((tokens, j) => {
-        const previo = anterior ? aTexto(anterior[i][j]) : null;
-        if (aTexto(tokens) !== previo) this.animarCambio(this.celdas[i][j], tokens);
+      fila.forEach((lineas, j) => {
+        const previo = anterior ? celdaATexto(anterior[i][j]) : null;
+        if (celdaATexto(lineas) !== previo) this.animarCambio(this.celdas[i][j], lineas);
       });
     });
   }
 
-  animarCambio(celda, tokens) {
+  animarCambio(celda, lineas) {
     const valor = celda.querySelector('.celda__valor');
     celda.classList.add('celda--saliendo');
 
     window.setTimeout(() => {
       valor.textContent = '';
-      tokens.forEach((t) => {
-        const pieza = document.createElement('span');
-        pieza.className = `token token--${t.tipo}`;
-        pieza.textContent = t.texto;
-        valor.appendChild(pieza);
+      lineas.forEach((linea) => {
+        const filaDiv = document.createElement('div');
+        filaDiv.className = 'procedimiento__linea';
+        linea.forEach((t) => {
+          const pieza = document.createElement('span');
+          pieza.className = `token token--${t.tipo}`;
+          pieza.textContent = t.texto;
+          filaDiv.appendChild(pieza);
+        });
+        valor.appendChild(filaDiv);
       });
 
       celda.classList.remove('celda--saliendo');
