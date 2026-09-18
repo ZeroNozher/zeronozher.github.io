@@ -1,0 +1,577 @@
+/* Pestaña -------------------------------------------------------------- */
+
+.pestania {
+  padding: var(--esp-3) var(--esp-4);
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: var(--radio) var(--radio) 0 0;
+  background: none;
+  color: var(--tinta-suave);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 120ms var(--curva), background 120ms var(--curva);
+}
+
+.pestania:hover {
+  color: var(--tinta);
+}
+
+.pestania--activa {
+  border-color: var(--linea-fuerte);
+  background: var(--superficie);
+  color: var(--tinta);
+  margin-bottom: -1px;
+  padding-bottom: calc(var(--esp-3) + 1px);
+}
+
+/* Matriz --------------------------------------------------------------- */
+
+.matriz {
+  padding: var(--esp-4);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-grande);
+  background: var(--superficie);
+}
+
+.matriz__titulo {
+  font-size: var(--tam-subtitulo);
+  font-weight: 600;
+}
+
+.matriz__subtitulo {
+  margin-top: 2px;
+  color: var(--tinta-tenue);
+  font-size: var(--tam-chico);
+}
+
+.matriz__cuerpo {
+  display: flex;
+  gap: var(--esp-3);
+  margin-top: var(--esp-4);
+  /* Sin efecto en escritorio, donde la tarjeta ya mide justo lo que su
+     contenido necesita. Con la tarjeta estirada a todo el ancho en mobile
+     (grilla de una sola columna), evita que la matriz quede pegada a la
+     izquierda dentro de una tarjeta mucho más ancha que ella. */
+  justify-content: center;
+}
+
+.matriz__filas-etiquetas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--celda-gap);
+}
+
+.matriz__etiqueta-fila {
+  display: flex;
+  align-items: center;
+  height: var(--celda-alto);
+  color: var(--tinta-tenue);
+  font-family: var(--fuente-numero);
+  font-size: var(--tam-chico);
+}
+
+.matriz__grilla {
+  display: grid;
+  grid-template-columns: repeat(var(--columnas), var(--celda-ancho));
+  gap: var(--celda-gap);
+}
+
+/* Celda ---------------------------------------------------------------- */
+
+.celda {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--celda-alto);
+  padding: 0;
+  border: 1px solid var(--celda-borde, var(--linea));
+  border-radius: var(--radio);
+  background: var(--celda-fondo, var(--superficie-hundida));
+  color: var(--celda-texto, inherit);
+  font-family: var(--fuente-numero);
+  font-size: var(--tam-celda);
+  font-variant-numeric: tabular-nums;
+  transition: border-color 140ms var(--curva), background 140ms var(--curva);
+}
+
+/* Paletas por matriz ----------------------------------------------------
+   Cada variante define sus tres tonos como variables locales, así la celda
+   no necesita saber en qué matriz está: lee --celda-fondo y listo.        */
+
+.matriz--a {
+  --celda-fondo: var(--a-celda);
+  --celda-texto: var(--a-texto);
+  --celda-borde: var(--a-fondo);
+  background: var(--a-fondo);
+  border-color: var(--a-fondo);
+}
+
+.matriz--b {
+  --celda-fondo: var(--b-celda);
+  --celda-texto: var(--b-texto);
+  --celda-borde: var(--b-fondo);
+  background: var(--b-fondo);
+  border-color: var(--b-fondo);
+}
+
+.matriz--r {
+  --celda-fondo: var(--r-celda);
+  --celda-texto: var(--r-texto);
+  --celda-borde: var(--r-fondo);
+  background: var(--r-fondo);
+  border-color: var(--r-fondo);
+}
+
+.matriz--a .matriz__titulo,
+.matriz--b .matriz__titulo,
+.matriz--r .matriz__titulo,
+.matriz--a .matriz__etiqueta-fila,
+.matriz--b .matriz__etiqueta-fila,
+.matriz--r .matriz__etiqueta-fila {
+  color: var(--celda-texto);
+}
+
+.matriz--a .matriz__subtitulo,
+.matriz--b .matriz__subtitulo,
+.matriz--r .matriz__subtitulo {
+  color: var(--celda-texto);
+  opacity: 0.72;
+}
+
+.matriz--editable .celda {
+  cursor: pointer;
+}
+
+.matriz--editable .celda:hover {
+  border-color: var(--tinta-tenue);
+}
+
+.celda--seleccionada,
+.matriz--editable .celda--seleccionada:hover {
+  border-color: var(--acento);
+  background: var(--acento-tenue);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+.celda--destacada {
+  border-color: var(--acento);
+  background: var(--acento-tenue);
+}
+
+.celda__valor {
+  display: block;
+  transition: opacity var(--transicion-celda) var(--curva),
+    transform var(--transicion-celda) var(--curva);
+}
+
+.celda--saliendo .celda__valor {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.celda--entrando .celda__valor {
+  animation: celda-entra var(--transicion-celda) var(--curva);
+}
+
+@keyframes celda-entra {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Herramientas de la matriz -------------------------------------------- */
+
+.herramientas {
+  display: flex;
+  gap: var(--esp-2);
+  margin-top: var(--esp-4);
+}
+
+/* Botones -------------------------------------------------------------- */
+
+.boton {
+  padding: var(--esp-2) var(--esp-4);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--radio);
+  background: var(--superficie);
+  font-size: var(--tam-chico);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 120ms var(--curva), border-color 120ms var(--curva);
+}
+
+.boton:hover {
+  background: var(--superficie-hundida);
+  border-color: var(--tinta-tenue);
+}
+
+.boton--primario {
+  padding: var(--esp-3) var(--esp-5);
+  border-color: var(--acento);
+  background: var(--acento);
+  color: #fff;
+  font-size: var(--tam-base);
+}
+
+.boton--primario:hover:not(:disabled) {
+  background: var(--acento-oscuro);
+  border-color: var(--acento-oscuro);
+}
+
+.boton--primario:disabled {
+  border-color: var(--linea);
+  background: var(--linea);
+  color: var(--tinta-tenue);
+  cursor: not-allowed;
+}
+
+/* Panel de operaciones -------------------------------------------------- */
+
+.panel {
+  padding: var(--esp-4);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-grande);
+  background: var(--superficie);
+}
+
+.panel__titulo {
+  font-size: var(--tam-subtitulo);
+  font-weight: 600;
+}
+
+.panel__bloques {
+  display: grid;
+  gap: var(--esp-2);
+  margin-top: var(--esp-4);
+}
+
+.bloque {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: 2px var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  background: var(--superficie-hundida);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 140ms var(--curva), background 140ms var(--curva);
+}
+
+.bloque:hover {
+  border-color: var(--linea-fuerte);
+  background: var(--superficie);
+}
+
+.bloque--activo,
+.bloque--activo:hover {
+  border-color: var(--acento);
+  background: var(--acento-tenue);
+}
+
+.bloque__nombre {
+  font-weight: 600;
+}
+
+.bloque__formula {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--tinta-suave);
+  font-family: var(--fuente-numero);
+  font-size: var(--tam-chico);
+}
+
+.bloque__resumen {
+  color: var(--tinta-tenue);
+  font-size: var(--tam-chico);
+}
+
+.panel__opciones {
+  display: grid;
+  gap: var(--esp-4);
+  padding: var(--esp-4);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-grande);
+  background: var(--superficie);
+}
+
+.panel__vacio {
+  color: var(--tinta-tenue);
+  font-size: var(--tam-chico);
+}
+
+.panel__pie {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-4);
+  margin-top: var(--esp-4);
+}
+
+.panel__nota {
+  color: var(--tinta-tenue);
+  font-size: var(--tam-chico);
+}
+
+/* Controles -------------------------------------------------------------
+   Grilla de tres filas: etiquetas arriba, controles al medio, avisos abajo.
+   Cada campo usa display:contents para que sus tres partes caigan en esas
+   filas en vez de apilarse por su cuenta; así "Fila base", "Factor k" y
+   "Fila a modificar" quedan alineados entre sí, y "×" y "se suma a"
+   también.                                                                */
+
+.controles {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  grid-template-rows: auto auto auto;
+  align-items: center;
+  gap: var(--esp-1) var(--esp-3);
+}
+
+.controles .campo {
+  display: contents;
+}
+
+.controles__signo {
+  align-self: center;
+  color: var(--tinta-suave);
+  font-family: var(--fuente-numero);
+  font-size: var(--tam-chico);
+  white-space: nowrap;
+}
+
+.campo {
+  display: grid;
+  gap: var(--esp-1);
+}
+
+.campo__etiqueta {
+  color: var(--tinta-suave);
+  font-size: var(--tam-chico);
+}
+
+.campo__input,
+.campo__select {
+  height: 38px;
+  padding: 0 var(--esp-3);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--radio);
+  background: var(--superficie);
+  font-family: var(--fuente-numero);
+  font-size: var(--tam-base);
+}
+
+.campo__input {
+  width: 108px;
+}
+
+.campo__input:focus {
+  border-color: var(--acento);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--acento-tenue);
+}
+
+.campo__aviso {
+  min-height: 16px;
+  color: var(--alerta);
+  font-size: 0.75rem;
+}
+
+.campo--error .campo__input {
+  border-color: var(--alerta);
+}
+
+/* Vista previa de fila --------------------------------------------------- */
+
+.vista-fila__titulo {
+  color: var(--tinta-suave);
+  font-family: var(--fuente-numero);
+  font-size: var(--tam-chico);
+}
+
+.vista-fila__valores {
+  display: flex;
+  gap: var(--celda-gap);
+  margin-top: var(--esp-2);
+}
+
+.vista-fila__valor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--celda-ancho);
+  height: 40px;
+  border: 1px dashed var(--linea-fuerte);
+  border-radius: var(--radio);
+  font-family: var(--fuente-numero);
+  font-variant-numeric: tabular-nums;
+}
+
+.vista-fila__valores--vacia {
+  color: var(--tinta-tenue);
+  font-size: var(--tam-chico);
+}
+
+/* Editor de celda -------------------------------------------------------- */
+
+.editor-celda {
+  display: grid;
+  gap: var(--esp-2);
+  padding: var(--esp-4);
+  border: 1px solid var(--acento);
+  border-radius: var(--radio-grande);
+  background: var(--superficie);
+}
+
+.editor-celda__ubicacion {
+  font-weight: 600;
+}
+
+.editor-celda__ayuda {
+  color: var(--tinta-tenue);
+  font-size: var(--tam-chico);
+}
+
+/* Procedimiento ---------------------------------------------------------- */
+
+.matriz--procedimiento {
+  width: max-content;
+  margin: 0 auto;
+}
+
+.matriz--procedimiento .matriz__grilla {
+  grid-template-columns: repeat(var(--columnas), var(--celda-ancho-proc, 140px));
+}
+
+.celda--procedimiento {
+  justify-content: flex-end;
+  height: var(--celda-alto-proc);
+  padding: 0 var(--esp-2);
+  font-size: var(--tam-celda-proc);
+  letter-spacing: -0.01em;
+  white-space: pre;
+}
+
+.matriz--procedimiento .matriz__etiqueta-fila {
+  height: var(--celda-alto-proc);
+}
+
+/* El origen de cada término se lee por el color: A, B, o el resultado.
+   Los operadores van con el color del resultado, que es lo que la cuenta
+   está construyendo. */
+.token--a,
+.token--b,
+.token--r,
+.token--op {
+  font-weight: 600;
+}
+
+.token--a {
+  color: var(--a-texto);
+}
+
+.token--b {
+  color: var(--b-texto);
+}
+
+.token--r,
+.token--op {
+  color: var(--r-texto);
+}
+
+/* Sin operación elegida P es A sin tocar, así que todo va en el tono de A. */
+.matriz--procedimiento.matriz--a .token--a,
+.matriz--procedimiento.matriz--a .token--b,
+.matriz--procedimiento.matriz--a .token--r,
+.matriz--procedimiento.matriz--a .token--op {
+  color: var(--a-texto);
+}
+
+/* Panel angosto del selector de operación -------------------------------- */
+
+.panel--angosto {
+  display: grid;
+  gap: var(--esp-3);
+  width: max-content;
+}
+
+.campo__select--operacion {
+  width: 100%;
+  min-width: 190px;
+}
+
+.panel--angosto .panel__nota {
+  max-width: 22ch;
+}
+
+/* Responsive --------------------------------------------------------------
+   Nivel 2 (640px): la fila "Fila base / × / Factor k / se suma a / Fila a
+   modificar" deja de entrar en una sola línea. Se abandona la alineación
+   en grilla de tres filas y se pasa a un flujo que envuelve con
+   normalidad — cada campo con su etiqueta arriba, como cualquier
+   formulario de teléfono. De paso, los bloques de operación pasan a una
+   columna (la fórmula ya no compite por ancho con el nombre) y la matriz
+   de procedimiento gana un scroll horizontal de respaldo, por si un
+   producto con números de tres dígitos no entra ni achicando la letra.  */
+@media (max-width: 640px) {
+  .controles {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--esp-2) var(--esp-4);
+  }
+
+  .controles .campo {
+    display: grid;
+  }
+
+  /* El signo ("×", "se suma a") se arma con las mismas tres partes que un
+     campo para alinearlo en la grilla de escritorio; acá esa alineación
+     ya no aplica, así que la etiqueta y el aviso vacíos no aportan nada
+     y solo suman líneas en blanco. */
+  .controles .campo--signo .campo__etiqueta,
+  .controles .campo--signo .campo__aviso {
+    display: none;
+  }
+
+  .bloque {
+    grid-template-columns: 1fr;
+  }
+
+  .bloque__formula {
+    grid-column: 1;
+    grid-row: auto;
+    margin-top: 2px;
+  }
+
+  .matriz--procedimiento .matriz__grilla {
+    /* Sin esto, un ítem flex no se encoge por debajo del ancho de su
+       contenido (min-width:auto es el default) y el overflow-x:auto de
+       abajo nunca llegaría a activarse: el contenedor crecería en vez de
+       scrollear. */
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: var(--esp-1);
+  }
+
+  .matriz--procedimiento {
+    width: 100%;
+  }
+}
+
+/* Nivel 3 (400px): declutter de texto de apoyo. El resumen de cada
+   operación ("Dos filas cambian de lugar.") es una ayuda de más, no
+   información nueva — el nombre y la fórmula ya identifican la
+   operación. */
+@media (max-width: 400px) {
+  .bloque__resumen {
+    display: none;
+  }
+}

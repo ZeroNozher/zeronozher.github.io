@@ -1,205 +1,236 @@
-.topbar {
-  padding: 24px;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--text);
+/* Base --------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.topbar h1 {
-  font-size: 1.5rem;
+html {
+  /* Red de seguridad: si algún contenido puntual se pasa de ancho, que
+     scrollee él (ver la matriz de procedimiento más abajo), no la página
+     entera. El cálculo de tamaños fluidos ya apunta a que esto no haga
+     falta, pero es barato tenerlo por si acaso. */
+  overflow-x: hidden;
 }
 
-.toolbar {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
+body {
+  margin: 0;
+  max-width: 100vw;
+  padding: var(--esp-7) var(--esp-6) var(--esp-7);
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--fuente-texto);
+  font-size: var(--tam-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-.search {
-  flex: 1;
+h1,
+h2,
+h3,
+p {
+  margin: 0;
 }
 
-.search::placeholder {
-  color: var(--text);
-}
-
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.filter {
-  position: relative;
-}
-
-.filter summary {
-  list-style: none;
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border: 1px solid var(--text);
-  border-radius: var(--radius-md);
-  background: var(--surface);
+button,
+select,
+input {
   font: inherit;
+  color: inherit;
 }
 
-.filter summary::-webkit-details-marker {
-  display: none;
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
 }
 
-.filter summary::after {
-  content: "▾";
+/* Cabecera ------------------------------------------------------------ */
+
+.cabecera {
+  max-width: 1180px;
+  margin: 0 auto var(--esp-6);
 }
 
-.filter[open] summary::after {
-  content: "▴";
+.cabecera__titulo {
+  font-size: var(--tam-titulo);
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
-.filter-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  min-width: 240px;
-  max-width: 90vw;
-  padding: 14px;
+.cabecera__bajada {
+  margin-top: var(--esp-2);
+  max-width: 56ch;
+  color: var(--tinta-suave);
+}
+
+/* Pestañas ------------------------------------------------------------ */
+
+.app {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.pestanias {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: var(--surface);
-  border: 1px solid var(--text);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-menu);
-  z-index: 100;
+  gap: var(--esp-1);
+  border-bottom: 1px solid var(--linea-fuerte);
+  /* Con nombres de pestaña largos, un teléfono angosto puede no tener
+     lugar para las dos. Scrollea la barra en vez de partir los nombres
+     o encimar las pestañas. */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
-.filter-menu label {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  cursor: pointer;
+.pestanias__cuerpo {
+  padding-top: var(--esp-5);
 }
 
-.summary-menu {
-  min-width: 300px;
-  max-width: 90vw;
+/* Banco de trabajo ----------------------------------------------------- */
+
+.banco {
+  display: grid;
+  grid-template-columns: max-content minmax(380px, 1fr) max-content;
+  grid-template-areas:
+    'entrada panel resultado'
+    'editor  opciones ayuda';
+  column-gap: var(--esp-6);
+  row-gap: var(--esp-5);
+  align-items: start;
 }
 
-.active-filter,
-.destructive-filter {
-  padding: 10px 12px;
-  border: 1px solid var(--text);
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  color: var(--text);
-  font: inherit;
-  line-height: 1.2;
-  cursor: pointer;
+.banco__entrada {
+  grid-area: entrada;
+}
+.banco__panel {
+  grid-area: panel;
+}
+.banco__resultado {
+  grid-area: resultado;
+}
+.banco__editor {
+  grid-area: editor;
+}
+.banco__opciones {
+  grid-area: opciones;
+}
+.banco__ayuda {
+  grid-area: ayuda;
+  max-width: 24ch;
 }
 
-.destructive-filter {
-  width: 100%;
-  text-align: left;
+.banco__ayuda-texto {
+  color: var(--tinta-tenue);
+  font-size: var(--tam-chico);
 }
 
-.active-filter {
-  white-space: nowrap;
+/* Banco binario --------------------------------------------------------- */
+
+.banco-binario {
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
+  grid-template-areas:
+    'a operacion b r'
+    'proc proc proc proc';
+  justify-content: start;
+  column-gap: var(--esp-5);
+  row-gap: var(--esp-6);
+  align-items: start;
 }
 
-.active-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  flex: 1;
+.banco-binario__a {
+  grid-area: a;
+}
+.banco-binario__operacion {
+  grid-area: operacion;
+  display: grid;
+  gap: var(--esp-3);
+}
+.banco-binario__b {
+  grid-area: b;
+}
+.banco-binario__r {
+  grid-area: r;
+}
+.banco-binario__procedimiento {
+  grid-area: proc;
 }
 
-#price-filter,
-#category-filter,
-#location-filter,
-.select-wrapper {
-  flex-shrink: 0;
-}
+/* Responsive --------------------------------------------------------------
+   Tres niveles, cada uno resolviendo un problema distinto:
 
-.select-wrapper {
-  position: relative;
-  flex-shrink: 0;
-}
+   1. ~1020px / ~1150px — las dos grillas de tres y cuatro columnas dejan
+      de entrar. El umbral no es un número redondo de manual de estilo:
+      sale de sumar el ancho mínimo real de las piezas de cada una
+      (ver el cálculo en cada bloque). Por debajo, se apilan en una sola
+      columna y se reordenan para seguir el flujo de uso: primero lo que
+      se edita, después la operación, al final el resultado.
 
-.select-wrapper::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 6px solid var(--text);
-  transform: translateY(-50%);
-  pointer-events: none;
-}
+   2. 640px — la fila de controles ("Fila base" + factor + "Fila a
+      modificar") deja de entrar en una sola línea. En vez de apretarla,
+      se abandona la alineación en grilla y se pasa a un flujo que envuelve
+      con normalidad: cada campo con su etiqueta arriba, como cualquier
+      formulario de teléfono.
 
-#sort-selector {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding-right: 32px;
-}
+   3. 400px — ya no es un problema de que algo no entre, sino de cuánto
+      hace falta para usar la herramienta. Se oculta texto de apoyo
+      (bajada de la cabecera, resumen de cada operación, la nota de cómo
+      revertir) para que la matriz y los controles tengan más aire. Nada
+      de lo que se oculta acá es necesario para editar una matriz, elegir
+      una operación o leer el resultado.                                 */
 
-#update-actions {
-  display: flex;
-  gap: 12px;
-  width: 200px;
-  flex-shrink: 0;
-}
-
-#update-actions button {
-  flex: 1;
-}
-
-/* ---------- Responsive ---------- */
-
-@media (max-width: 700px) {
-  .toolbar {
-    flex-wrap: wrap;
+/* Nivel 1a — banco de operaciones elementales.
+   Ancho mínimo en desktop: entrada (~292px) + panel (min 380px) +
+   resultado (~292px) + 2 column-gap (~2×16px) ≈ 1028px.                  */
+@media (max-width: 1020px) {
+  .banco {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'entrada'
+      'editor'
+      'panel'
+      'opciones'
+      'resultado'
+      'ayuda';
   }
 
-  .search {
-    flex-basis: 100%;
+  .banco__ayuda {
+    max-width: none;
+  }
+}
+
+/* Nivel 1b — banco de operaciones binarias.
+   Ancho mínimo en desktop: tres matrices (~292px c/u) + panel angosto
+   (~220px) + 3 column-gap (~3×24px) ≈ 1168px.                           */
+@media (max-width: 1150px) {
+  .banco-binario {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'a'
+      'b'
+      'operacion'
+      'r'
+      'proc';
+    justify-content: normal;
   }
 
-  #update-actions {
+  .panel--angosto {
+    width: 100%;
+  }
+
+  .campo__select--operacion {
     width: 100%;
   }
 }
 
-@media (max-width: 480px) {
-  .topbar {
-    padding: 16px;
+/* Nivel 3 — pantallas muy chicas: se oculta texto de apoyo, no funciones. */
+@media (max-width: 400px) {
+  .cabecera__bajada {
+    display: none;
   }
 
-  .topbar h1 {
-    font-size: 1.2rem;
-  }
-
-  .filter-bar {
-    gap: 8px;
-  }
-
-  #price-filter,
-  #category-filter,
-  #location-filter,
-  .select-wrapper {
-    flex: 1 1 auto;
-  }
-
-  .select-wrapper select,
-  .filter summary {
-    width: 100%;
+  .banco__ayuda {
+    display: none;
   }
 }
