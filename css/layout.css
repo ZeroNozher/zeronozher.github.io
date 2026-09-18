@@ -99,21 +99,27 @@ input {
   flex-direction: column;
   gap: var(--esp-4);
 }
+
 .banco__entrada .editor-celda {
   align-self: flex-start;
 }
+
 .banco__panel {
   grid-area: panel;
 }
+
 .banco__resultado {
   grid-area: resultado;
 }
+
 .banco__editor {
   grid-area: editor;
 }
+
 .banco__opciones {
   grid-area: opciones;
 }
+
 .banco__ayuda {
   grid-area: ayuda;
   max-width: 24ch;
@@ -141,17 +147,22 @@ input {
 .banco-binario__a {
   grid-area: a;
 }
+
 .banco-binario__operacion {
   grid-area: operacion;
   display: grid;
   gap: var(--esp-3);
 }
+
+
 .banco-binario__b {
   grid-area: b;
 }
+
 .banco-binario__r {
   grid-area: r;
 }
+
 .banco-binario__procedimiento {
   grid-area: proc;
 }
@@ -208,27 +219,27 @@ input {
     align-items: start;
   }
 
-  .banco__entrada > .matriz {
+  .banco__entrada>.matriz {
     grid-area: matriz;
     min-width: 0;
   }
 
-  .banco__entrada > .herramientas {
+  .banco__entrada>.herramientas {
     grid-area: botones;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--esp-2);
     margin-top: 0;
   }
-  
-  .herramientas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--esp-2);
-  margin-top: var(--esp-4);
-}
 
-  .banco__entrada > .banco__editor {
+  .herramientas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+    margin-top: var(--esp-4);
+  }
+
+  .banco__entrada>.banco__editor {
     grid-area: editor;
     justify-self: start;
   }
@@ -247,6 +258,16 @@ input {
       'proc       proc';
     column-gap: var(--esp-4);
     justify-content: normal;
+  }
+
+  .banco-binario__operacion {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .banco-binario__r {
+    width: 60%;
+    margin: 0 auto;
   }
 
   .panel--angosto {
