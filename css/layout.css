@@ -73,14 +73,9 @@ input {
 
 .pestanias {
   display: flex;
-  gap: var(--esp-1);
+  flex-wrap: wrap;
+  gap: var(--esp-1) var(--esp-2);
   border-bottom: 1px solid var(--linea-fuerte);
-  /* Con nombres de pestaña largos, un teléfono angosto puede no tener
-     lugar para las dos. Scrollea la barra en vez de partir los nombres
-     o encimar las pestañas. */
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
 }
 
 .pestanias__cuerpo {
@@ -88,20 +83,24 @@ input {
 }
 
 /* Banco de trabajo ----------------------------------------------------- */
-
 .banco {
   display: grid;
   grid-template-columns: max-content minmax(380px, 1fr) max-content;
   grid-template-areas:
-    'entrada panel resultado'
-    'editor  opciones ayuda';
+    'entrada panel   resultado'
+    '.       opciones ayuda';
   column-gap: var(--esp-6);
   row-gap: var(--esp-5);
   align-items: start;
 }
 
 .banco__entrada {
-  grid-area: entrada;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+.banco__entrada .editor-celda {
+  align-self: flex-start;
 }
 .banco__panel {
   grid-area: panel;
@@ -188,7 +187,6 @@ input {
     grid-template-columns: 1fr;
     grid-template-areas:
       'entrada'
-      'editor'
       'panel'
       'opciones'
       'resultado'
@@ -198,6 +196,42 @@ input {
   .banco__ayuda {
     max-width: none;
   }
+
+  .banco__entrada {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-areas:
+      'matriz  botones'
+      'matriz  editor';
+    column-gap: var(--esp-4);
+    row-gap: var(--esp-3);
+    align-items: start;
+  }
+
+  .banco__entrada > .matriz {
+    grid-area: matriz;
+    min-width: 0;
+  }
+
+  .banco__entrada > .herramientas {
+    grid-area: botones;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--esp-2);
+    margin-top: 0;
+  }
+  
+  .herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  margin-top: var(--esp-4);
+}
+
+  .banco__entrada > .banco__editor {
+    grid-area: editor;
+    justify-self: start;
+  }
 }
 
 /* Nivel 1b — banco de operaciones binarias.
@@ -205,13 +239,13 @@ input {
    (~220px) + 3 column-gap (~3×24px) ≈ 1168px.                           */
 @media (max-width: 1150px) {
   .banco-binario {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      'a'
-      'b'
-      'operacion'
-      'r'
-      'proc';
+      'a          b'
+      'operacion  operacion'
+      'r          r'
+      'proc       proc';
+    column-gap: var(--esp-4);
     justify-content: normal;
   }
 

@@ -33,7 +33,6 @@ export const elementaryOpsModule = {
     const celdaEntrada = crearCelda(banco, 'banco__entrada');
     const celdaPanel = crearCelda(banco, 'banco__panel');
     const celdaResultado = crearCelda(banco, 'banco__resultado');
-    const celdaEditor = crearCelda(banco, 'banco__editor');
     const celdaOpciones = crearCelda(banco, 'banco__opciones');
     const celdaAyuda = crearCelda(banco, 'banco__ayuda');
 
@@ -66,6 +65,10 @@ export const elementaryOpsModule = {
     herramientas.appendChild(botonVaciar);
 
     celdaEntrada.appendChild(herramientas);
+
+    const celdaEditor = document.createElement('div');
+    celdaEditor.className = 'banco__editor';
+    celdaEntrada.appendChild(celdaEditor);
 
     // --- Editor de celda ---------------------------------------------------
     const editor = new CellEditor({
