@@ -53,14 +53,18 @@ export const elementaryOpsModule = {
     const botonAzar = document.createElement('button');
     botonAzar.type = 'button';
     botonAzar.className = 'boton';
-    botonAzar.textContent = 'Sortear valores';
+    botonAzar.textContent = '🎲';
+    botonAzar.setAttribute('aria-label', 'Sortear valores');
+    botonAzar.title = 'Sortear valores';
     botonAzar.addEventListener('click', () => reiniciar(matrizAlAzar(ORDEN)));
     herramientas.appendChild(botonAzar);
 
     const botonVaciar = document.createElement('button');
     botonVaciar.type = 'button';
     botonVaciar.className = 'boton';
-    botonVaciar.textContent = 'Poner en cero';
+    botonVaciar.textContent = '🔄';
+    botonVaciar.setAttribute('aria-label', 'Poner en cero');
+    botonVaciar.title = 'Poner en cero';
     botonVaciar.addEventListener('click', () => reiniciar(Matrix.zeros(ORDEN)));
     herramientas.appendChild(botonVaciar);
 
@@ -141,7 +145,7 @@ export const elementaryOpsModule = {
       panel.sincronizar();
     }
 
-    reiniciar(matrizAlAzar(ORDEN));
+    reiniciar(Matrix.zeros(ORDEN))
   },
 };
 

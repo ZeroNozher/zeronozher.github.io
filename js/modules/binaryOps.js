@@ -209,8 +209,8 @@ export const binaryOpsModule = {
       vistaProcedimiento.setFilas(explicarBinaria(operacion, a, b));
     }
 
-    reiniciar('a', matrizAlAzar(ORDEN));
-    reiniciar('b', matrizAlAzar(ORDEN));
+    reiniciar('a', Matrix.zeros(ORDEN));
+    reiniciar('b', Matrix.zeros(ORDEN));
   },
 };
 
