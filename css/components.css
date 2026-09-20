@@ -443,28 +443,32 @@
 /* Procedimiento ---------------------------------------------------------- */
 
 .matriz--procedimiento {
-  width: max-content;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .matriz--procedimiento .matriz__grilla {
-  grid-template-columns: max-content repeat(var(--columnas), var(--celda-ancho-proc, 140px));
+  grid-template-columns: max-content repeat(var(--columnas), var(--celda-ancho-proc, 100px));
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: var(--esp-1);
 }
-
 
 .celda--procedimiento {
   justify-content: flex-end;
-  height: var(--celda-alto-proc);
-  padding: 0 var(--esp-2);
+  height: auto;
+  min-height: var(--celda-alto-proc);
+  padding: var(--esp-2);
   font-size: var(--tam-celda-proc);
   letter-spacing: -0.01em;
+  align-items: flex-start;
 }
 
 .celda--procedimiento .celda__valor {
   display: flex;
-  align-items: baseline;
-  gap: var(--esp-1);
-  white-space: pre;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
 }
 
 .procedimiento__linea {
@@ -474,7 +478,8 @@
 
 .matriz--procedimiento .matriz__etiqueta-fila {
   height: auto;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: var(--esp-2);
   padding-right: var(--esp-2);
 }
 
@@ -526,15 +531,7 @@
   max-width: 22ch;
 }
 
-/* Responsive --------------------------------------------------------------
-   Nivel 2 (640px): la fila "Fila base / × / Factor k / se suma a / Fila a
-   modificar" deja de entrar en una sola línea. Se abandona la alineación
-   en grilla de tres filas y se pasa a un flujo que envuelve con
-   normalidad — cada campo con su etiqueta arriba, como cualquier
-   formulario de teléfono. De paso, los bloques de operación pasan a una
-   columna (la fórmula ya no compite por ancho con el nombre) y la matriz
-   de procedimiento gana un scroll horizontal de respaldo, por si un
-   producto con números de tres dígitos no entra ni achicando la letra.  */
+/* Responsive */
 @media (max-width: 640px) {
   .controles {
     display: flex;
@@ -564,43 +561,6 @@
     grid-column: 1;
     grid-row: auto;
     margin-top: 2px;
-  }
-
-  .matriz--procedimiento .matriz__grilla {
-    /* Sin esto, un ítem flex no se encoge por debajo del ancho de su
-       contenido (min-width:auto es el default) y el overflow-x:auto de
-       abajo nunca llegaría a activarse: el contenedor crecería en vez de
-       scrollear. */
-    min-width: 0;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: var(--esp-1);
-  }
-
-  .matriz--procedimiento {
-    width: 100%;
-  }
-
-  .matriz--procedimiento .matriz__grilla {
-    grid-template-columns: max-content repeat(var(--columnas), var(--celda-ancho-proc-movil, 100px));
-  }
-
-  .celda--procedimiento {
-    height: auto;
-    min-height: var(--celda-alto-proc);
-    padding: var(--esp-2);
-    align-items: flex-start;
-  }
-
-  .celda--procedimiento .celda__valor {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-  }
-
-  .matriz--procedimiento .matriz__etiqueta-fila {
-    align-items: flex-start;
-    padding-top: var(--esp-2);
   }
 }
 

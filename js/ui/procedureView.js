@@ -20,7 +20,7 @@ function celdaATexto(lineas) {
  */
 
 const DURACION_SALIDA = 170; // ms — igual que en matrixView.js
-const PISO_LINEA_MOVIL = 6;
+const PISO_LINEA = 6;
 
 export class ProcedureView {
   /**
@@ -33,7 +33,7 @@ export class ProcedureView {
     this.subtitulo = subtitulo;
     this.celdas = [];
     this.filas = null;
-    this.minCaracteres = 12;
+    this.minCaracteres = PISO_LINEA;
   }
 
   mount(contenedor, orden = 3, columnas = 3) {
@@ -112,19 +112,12 @@ export class ProcedureView {
   }
 
   ajustarAncho(filas) {
-    const celdas = filas.flatMap((fila) => fila); // una entrada por celda: sus líneas
-
-    const anchoTotal = Math.max(
+    const celdas = filas.flatMap((fila) => fila);
+    const ancho = Math.max(
       this.minCaracteres,
-      ...celdas.map((lineas) => celdaATexto(lineas).length)
-    );
-    const anchoLinea = Math.max(
-      PISO_LINEA_MOVIL,
       ...celdas.flatMap((lineas) => lineas.map((l) => lineaATexto(l).length))
     );
-
-    this.grilla.style.setProperty('--celda-ancho-proc', `calc(${anchoTotal}ch + var(--esp-4))`);
-    this.grilla.style.setProperty('--celda-ancho-proc-movil', `calc(${anchoLinea}ch + var(--esp-4))`);
+    this.grilla.style.setProperty('--celda-ancho-proc', `calc(${ancho}ch + var(--esp-4))`);
   }
 
   setFilas(filas) {

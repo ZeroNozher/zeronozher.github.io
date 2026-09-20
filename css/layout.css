@@ -270,6 +270,18 @@ input {
   }
 }
 
+@media (max-width: 480px) {
+  .banco-binario {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'a'
+      'b'
+      'operacion'
+      'r'
+      'proc';
+  }
+}
+
 /* Nivel 3 — pantallas muy chicas: se oculta texto de apoyo, no funciones. */
 @media (max-width: 400px) {
   .cabecera__bajada {

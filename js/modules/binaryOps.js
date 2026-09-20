@@ -24,10 +24,10 @@ const ORDEN = 3;
 
 /** Piso de ancho del procedimiento, en caracteres, según cuántos términos entran. */
 const MINIMO_CARACTERES = {
-  ninguna: 8,
-  suma: 16,
-  resta: 16,
-  producto: 24,
+  ninguna: 6,
+  suma: 8,
+  resta: 8,
+  producto: 8,
 };
 
 export const binaryOpsModule = {
