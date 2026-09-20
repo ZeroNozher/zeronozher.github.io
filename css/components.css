@@ -178,6 +178,7 @@
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: none;
@@ -188,6 +189,7 @@
 
 .herramientas {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--esp-2);
   margin-top: var(--esp-4);
 }

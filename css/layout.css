@@ -232,13 +232,6 @@ input {
     margin-top: 0;
   }
 
-  .herramientas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--esp-2);
-    margin-top: var(--esp-4);
-  }
-
   .banco__entrada>.banco__editor {
     grid-area: editor;
     justify-self: start;
