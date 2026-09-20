@@ -1,17 +1,7 @@
-/**
- * Módulo 1 — Operaciones elementales (unarias).
- *
- * Una matriz de entrada editable, el panel de operaciones en el medio y
- * la matriz resultado a la derecha. Editar la entrada o sortear valores
- * reinicia el resultado; a partir de ahí las operaciones se encadenan
- * sobre el resultado.
- */
-
 import { Matrix } from '../core/matrix.js';
 import { matrizAlAzar } from '../core/random.js';
 import { swapRows, scaleRow, combineRows } from '../core/rowOps.js';
 import { MatrixView } from '../ui/matrixView.js';
-import { CellEditor } from '../ui/cellEditor.js';
 import { OperationPanel } from '../ui/operationPanel.js';
 
 const ORDEN = 3;
@@ -36,13 +26,14 @@ export const elementaryOpsModule = {
     const celdaOpciones = crearCelda(banco, 'banco__opciones');
     const celdaAyuda = crearCelda(banco, 'banco__ayuda');
 
-    // --- Matriz de entrada -------------------------------------------------
     const vistaEntrada = new MatrixView({
       titulo: 'Entrada',
       subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
-      onSeleccion: (fila, columna) => {
-        editor.abrir(fila, columna, estado.entrada.get(fila, columna).toString());
+      onCambio: (fila, columna, valor) => {
+        estado.entrada = estado.entrada.withValue(fila, columna, valor);
+        vistaEntrada.setMatriz(estado.entrada);
+        sincronizarResultado();
       },
     });
     vistaEntrada.mount(celdaEntrada, estado.entrada);
@@ -50,7 +41,7 @@ export const elementaryOpsModule = {
     const herramientas = document.createElement('div');
     herramientas.className = 'herramientas';
 
-    const botonAzar = document.createElement('button');
+const botonAzar = document.createElement('button');
     botonAzar.type = 'button';
     botonAzar.className = 'boton';
     botonAzar.textContent = '🎲';
@@ -70,30 +61,12 @@ export const elementaryOpsModule = {
 
     celdaEntrada.appendChild(herramientas);
 
-    const celdaEditor = document.createElement('div');
-    celdaEditor.className = 'banco__editor';
-    celdaEntrada.appendChild(celdaEditor);
-
-    // --- Editor de celda ---------------------------------------------------
-    const editor = new CellEditor({
-      onConfirmar: (fila, columna, valor) => {
-        estado.entrada = estado.entrada.withValue(fila, columna, valor);
-        vistaEntrada.setMatriz(estado.entrada);
-        vistaEntrada.limpiarSeleccion();
-        sincronizarResultado();
-      },
-      onCancelar: () => vistaEntrada.limpiarSeleccion(),
-    });
-    editor.mount(celdaEditor);
-
-    // --- Matriz resultado --------------------------------------------------
     const vistaResultado = new MatrixView({
       titulo: 'Resultado',
       subtitulo: 'Cada operación se aplica acá',
     });
     vistaResultado.mount(celdaResultado, estado.resultado);
 
-    // --- Panel de operaciones ----------------------------------------------
     const panel = new OperationPanel({
       getMatriz: () => estado.resultado,
       onAplicar: (descriptor) => aplicar(descriptor),
@@ -110,12 +83,10 @@ export const elementaryOpsModule = {
 
     contenedor.appendChild(banco);
 
-    // --- Lógica ------------------------------------------------------------
     function reiniciar(matriz) {
       estado.entrada = matriz;
       vistaEntrada.setMatriz(estado.entrada);
-      vistaEntrada.limpiarSeleccion();
-      editor.cerrar();
+      vistaEntrada.cancelarEdicion();
       sincronizarResultado();
     }
 
@@ -127,25 +98,18 @@ export const elementaryOpsModule = {
 
     function aplicar(descriptor) {
       const matriz = estado.resultado;
-
       if (descriptor.tipo === 'intercambiar') {
         estado.resultado = swapRows(matriz, descriptor.a, descriptor.b);
       } else if (descriptor.tipo === 'multiplo') {
         estado.resultado = scaleRow(matriz, descriptor.fila, descriptor.factor);
       } else if (descriptor.tipo === 'combinar') {
-        estado.resultado = combineRows(
-          matriz,
-          descriptor.origen,
-          descriptor.factor,
-          descriptor.destino
-        );
+        estado.resultado = combineRows(matriz, descriptor.origen, descriptor.factor, descriptor.destino);
       }
-
       vistaResultado.setMatriz(estado.resultado);
       panel.sincronizar();
     }
 
-    reiniciar(Matrix.zeros(ORDEN))
+    reiniciar(Matrix.zeros(ORDEN));
   },
 };
 

@@ -146,13 +146,6 @@
   border-color: var(--tinta-tenue);
 }
 
-.celda--seleccionada,
-.matriz--editable .celda--seleccionada:hover {
-  border-color: var(--acento);
-  background: var(--acento-tenue);
-  box-shadow: inset 0 0 0 1px var(--acento);
-}
-
 .celda--destacada {
   border-color: var(--acento);
   background: var(--acento-tenue);
@@ -162,6 +155,30 @@
   display: block;
   transition: opacity var(--transicion-celda) var(--curva),
     transform var(--transicion-celda) var(--curva);
+}
+
+.celda__input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-family: var(--fuente-numero);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  outline: none;
+}
+
+.celda--editando {
+  border-color: var(--acento);
+  background: var(--acento-tenue);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+.celda--invalida {
+  border-color: var(--alerta);
 }
 
 .celda--saliendo .celda__valor {
@@ -416,26 +433,6 @@
 }
 
 .vista-fila__valores--vacia {
-  color: var(--tinta-tenue);
-  font-size: var(--tam-chico);
-}
-
-/* Editor de celda -------------------------------------------------------- */
-
-.editor-celda {
-  display: grid;
-  gap: var(--esp-2);
-  padding: var(--esp-4);
-  border: 1px solid var(--acento);
-  border-radius: var(--radio-grande);
-  background: var(--superficie);
-}
-
-.editor-celda__ubicacion {
-  font-weight: 600;
-}
-
-.editor-celda__ayuda {
   color: var(--tinta-tenue);
   font-size: var(--tam-chico);
 }

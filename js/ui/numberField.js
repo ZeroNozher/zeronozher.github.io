@@ -16,6 +16,30 @@ const PATRONES = {
   racional: /[^0-9.,/-]/g,
 };
 
+export function filtrarNumero(texto, modo) {
+  let limpio = texto.replace(PATRONES[modo], '');
+
+  limpio = limpio.replace(/(?!^)-/g, (guion, posicion) =>
+    limpio[posicion - 1] === '/' ? guion : ''
+  );
+
+  if (modo === 'racional') {
+    const partes = limpio.split('/');
+    if (partes.length > 2) {
+      limpio = `${partes[0]}/${partes.slice(1).join('')}`;
+    }
+    limpio = limpio
+      .split('/')
+      .map((parte) => {
+        const trozos = parte.replace(/,/g, '.').split('.');
+        return trozos.length > 2 ? `${trozos[0]}.${trozos.slice(1).join('')}` : parte;
+      })
+      .join('/');
+  }
+
+  return limpio;
+}
+
 export class NumberField {
   /**
    * @param {object}   opciones
@@ -100,30 +124,7 @@ export class NumberField {
 
   /** Quita caracteres prohibidos y signos repetidos fuera de lugar. */
   filtrar(texto) {
-    let limpio = texto.replace(PATRONES[this.modo], '');
-
-    // El signo menos solo vale al principio o justo después de una barra.
-    limpio = limpio.replace(/(?!^)-/g, (guion, posicion) =>
-      limpio[posicion - 1] === '/' ? guion : ''
-    );
-
-    if (this.modo === 'racional') {
-      // Una sola barra en todo el texto.
-      const partes = limpio.split('/');
-      if (partes.length > 2) {
-        limpio = `${partes[0]}/${partes.slice(1).join('')}`;
-      }
-      // Un solo separador decimal por lado de la barra.
-      limpio = limpio
-        .split('/')
-        .map((parte) => {
-          const trozos = parte.replace(/,/g, '.').split('.');
-          return trozos.length > 2 ? `${trozos[0]}.${trozos.slice(1).join('')}` : parte;
-        })
-        .join('/');
-    }
-
-    return limpio;
+    return filtrarNumero(texto, this.modo);
   }
 
   /** @returns {Fraction|null} */

@@ -101,10 +101,6 @@ input {
   gap: var(--esp-4);
 }
 
-.banco__entrada .editor-celda {
-  align-self: flex-start;
-}
-
 .banco__panel {
   grid-area: panel;
 }
@@ -152,7 +148,6 @@ input {
   gap: var(--esp-3);
 }
 
-
 .banco-binario__b {
   grid-area: b;
 }
@@ -165,32 +160,7 @@ input {
   grid-area: proc;
 }
 
-/* Responsive --------------------------------------------------------------
-   Tres niveles, cada uno resolviendo un problema distinto:
-
-   1. ~1020px / ~1150px — las dos grillas de tres y cuatro columnas dejan
-      de entrar. El umbral no es un número redondo de manual de estilo:
-      sale de sumar el ancho mínimo real de las piezas de cada una
-      (ver el cálculo en cada bloque). Por debajo, se apilan en una sola
-      columna y se reordenan para seguir el flujo de uso: primero lo que
-      se edita, después la operación, al final el resultado.
-
-   2. 640px — la fila de controles ("Fila base" + factor + "Fila a
-      modificar") deja de entrar en una sola línea. En vez de apretarla,
-      se abandona la alineación en grilla y se pasa a un flujo que envuelve
-      con normalidad: cada campo con su etiqueta arriba, como cualquier
-      formulario de teléfono.
-
-   3. 400px — ya no es un problema de que algo no entre, sino de cuánto
-      hace falta para usar la herramienta. Se oculta texto de apoyo
-      (bajada de la cabecera, resumen de cada operación, la nota de cómo
-      revertir) para que la matriz y los controles tengan más aire. Nada
-      de lo que se oculta acá es necesario para editar una matriz, elegir
-      una operación o leer el resultado.                                 */
-
-/* Nivel 1a — banco de operaciones elementales.
-   Ancho mínimo en desktop: entrada (~292px) + panel (min 380px) +
-   resultado (~292px) + 2 column-gap (~2×16px) ≈ 1028px.                  */
+/* Responsive */
 @media (max-width: 1020px) {
   .banco {
     grid-template-columns: 1fr;
@@ -209,36 +179,25 @@ input {
   .banco__entrada {
     display: grid;
     grid-template-columns: 60% 40%;
-    grid-template-areas:
-      'matriz  botones'
-      'matriz  editor';
+    grid-template-areas: 'matriz botones';
     column-gap: var(--esp-4);
-    row-gap: var(--esp-3);
     align-items: start;
   }
 
-  .banco__entrada>.matriz {
+  .banco__entrada > .matriz {
     grid-area: matriz;
     min-width: 0;
   }
 
-  .banco__entrada>.herramientas {
+  .banco__entrada > .herramientas {
     grid-area: botones;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--esp-2);
     margin-top: 0;
   }
-
-  .banco__entrada>.banco__editor {
-    grid-area: editor;
-    justify-self: start;
-  }
 }
 
-/* Nivel 1b — banco de operaciones binarias.
-   Ancho mínimo en desktop: tres matrices (~292px c/u) + panel angosto
-   (~220px) + 3 column-gap (~3×24px) ≈ 1168px.                           */
 @media (max-width: 1150px) {
   .banco-binario {
     grid-template-columns: 1fr 1fr;
@@ -249,11 +208,6 @@ input {
       'proc       proc';
     column-gap: var(--esp-4);
     justify-content: normal;
-  }
-
-  .banco-binario__operacion {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
   }
 
   .banco-binario__r {
@@ -282,7 +236,6 @@ input {
   }
 }
 
-/* Nivel 3 — pantallas muy chicas: se oculta texto de apoyo, no funciones. */
 @media (max-width: 400px) {
   .cabecera__bajada {
     display: none;

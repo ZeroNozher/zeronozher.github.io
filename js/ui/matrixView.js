@@ -4,31 +4,29 @@
  * Se construye una sola vez y después solo se actualiza el texto de las
  * celdas que efectivamente cambiaron. Esa comparación es la que permite
  * animar únicamente lo que se modificó.
- */
+*/
 
-const DURACION_SALIDA = 170; // ms — debe coincidir con --transicion-celda en el CSS
+import { Fraction } from '../core/fraction.js';
+import { filtrarNumero } from './numberField.js';
+
+const DURACION_SALIDA = 170;
+const RANGO_CELDA = { min: -100, max: 100 };
 
 export class MatrixView {
-  /**
-   * @param {object} opciones
-   * @param {string}   opciones.titulo
-   * @param {string}  [opciones.subtitulo]
-   * @param {boolean} [opciones.editable]     habilita el click en celdas
-   * @param {string}  [opciones.variante]     paleta: 'a', 'b' o 'r'
-   * @param {Function}[opciones.onSeleccion]  (fila, columna) => void
-   */
   constructor({
     titulo,
     subtitulo = '',
     editable = false,
     variante = '',
-    onSeleccion = null,
+    onCambio = null,
+    onEmpezarEdicion = null,
   }) {
     this.titulo = titulo;
     this.subtitulo = subtitulo;
     this.editable = editable;
     this.variante = variante;
-    this.onSeleccion = onSeleccion;
+    this.onCambio = onCambio;
+    this.onEmpezarEdicion = onEmpezarEdicion;
 
     this.celdas = [];
     this.seleccion = null;
@@ -107,16 +105,107 @@ export class MatrixView {
     if (this.editable) {
       celda.type = 'button';
       celda.setAttribute('aria-label', `Fila ${fila + 1}, columna ${columna + 1}`);
-      celda.addEventListener('click', () => {
-        this.seleccionar(fila, columna);
-        if (this.onSeleccion) this.onSeleccion(fila, columna);
-      });
+      celda.addEventListener('click', () => this.iniciarEdicion(fila, columna));
     }
 
     return celda;
   }
 
-  /** Actualiza la vista animando solo las celdas cuyo valor cambió. */
+  iniciarEdicion(fila, columna) {
+    if (this.edicion) {
+      if (this.edicion.fila === fila && this.edicion.columna === columna) return;
+      this.confirmarOCancelar();
+    }
+
+    if (this.onEmpezarEdicion) this.onEmpezarEdicion();
+
+    const celda = this.celdas[fila][columna];
+    const valorSpan = celda.querySelector('.celda__valor');
+    const actual = this.matriz.get(fila, columna).toString();
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'celda__input';
+    input.inputMode = 'text'; // 'numeric' esconde el signo menos en varios teclados
+    input.autocomplete = 'off';
+    input.spellcheck = false;
+    input.value = actual;
+
+    input.addEventListener('input', () => {
+      const limpio = filtrarNumero(input.value, 'entero');
+      if (limpio !== input.value) input.value = limpio;
+      celda.classList.toggle('celda--invalida', !this.validar(input.value));
+    });
+
+    input.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Enter') {
+        evento.preventDefault();
+        this.confirmar(fila, columna, input.value);
+      } else if (evento.key === 'Escape') {
+        evento.preventDefault();
+        this.cancelarEdicion();
+      }
+    });
+
+    input.addEventListener('blur', () => {
+      // Tocar afuera de la celda también debe cerrar la edición.
+      // El setTimeout deja que un click en OTRA celda primero dispare su
+      // propio iniciarEdicion (que ya cierra esta edición); si eso ya pasó,
+      // this.edicion apunta a otra celda y esta llamada no hace nada.
+      window.setTimeout(() => {
+        if (this.edicion && this.edicion.fila === fila && this.edicion.columna === columna) {
+          this.confirmarOCancelar();
+        }
+      }, 0);
+    });
+
+    valorSpan.hidden = true;
+    celda.appendChild(input);
+    celda.classList.add('celda--editando');
+    this.edicion = { fila, columna, input, valorSpan };
+
+    input.focus();
+    input.select();
+  }
+
+  validar(texto) {
+    const valor = Fraction.parse(texto);
+    if (!valor) return false;
+    const numero = valor.toNumber();
+    return numero >= RANGO_CELDA.min && numero <= RANGO_CELDA.max;
+  }
+
+  confirmar(fila, columna, texto) {
+    if (!this.validar(texto)) return; // Enter con valor inválido: no hace nada
+    const valor = Fraction.parse(texto);
+    this.cerrarEdicionDom();
+    if (this.onCambio) this.onCambio(fila, columna, valor);
+  }
+
+  confirmarOCancelar() {
+    if (!this.edicion) return;
+    const { fila, columna, input } = this.edicion;
+    if (this.validar(input.value)) {
+      this.confirmar(fila, columna, input.value);
+    } else {
+      this.cancelarEdicion();
+    }
+  }
+
+  cancelarEdicion() {
+    if (!this.edicion) return;
+    this.cerrarEdicionDom();
+  }
+
+  cerrarEdicionDom() {
+    const { fila, columna, input, valorSpan } = this.edicion;
+    const celda = this.celdas[fila][columna];
+    celda.classList.remove('celda--editando', 'celda--invalida');
+    input.remove();
+    valorSpan.hidden = false;
+    this.edicion = null;
+  }
+
   setMatriz(matriz) {
     const anterior = this.matriz;
     this.matriz = matriz;
@@ -144,20 +233,6 @@ export class MatrixView {
     }, DURACION_SALIDA);
   }
 
-  seleccionar(fila, columna) {
-    this.limpiarSeleccion();
-    this.seleccion = { fila, columna };
-    this.celdas[fila][columna].classList.add('celda--seleccionada');
-  }
-
-  limpiarSeleccion() {
-    if (!this.seleccion) return;
-    const { fila, columna } = this.seleccion;
-    this.celdas[fila][columna].classList.remove('celda--seleccionada');
-    this.seleccion = null;
-  }
-
-  /** Marca filas involucradas en la operación que está por aplicarse. */
   destacarFilas(indices = []) {
     this.celdas.forEach((fila, i) => {
       fila.forEach((celda) => {

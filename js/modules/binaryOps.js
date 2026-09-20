@@ -1,13 +1,3 @@
-/**
- * Módulo 2 — Operaciones binarias.
- *
- * A, una operación, B, y el resultado. Sin botón de aplicar: elegir la
- * operación o editar cualquier celda recalcula todo en el acto.
- *
- * Debajo, la matriz P muestra la cuenta de cada celda. Es la parte que
- * hace que esto sirva para estudiar y no solo para obtener un número.
- */
-
 import { Matrix } from '../core/matrix.js';
 import { matrizAlAzar } from '../core/random.js';
 import {
@@ -18,17 +8,10 @@ import {
 } from '../core/matrixOps.js';
 import { MatrixView } from '../ui/matrixView.js';
 import { ProcedureView } from '../ui/procedureView.js';
-import { CellEditor } from '../ui/cellEditor.js';
 
 const ORDEN = 3;
 
-/** Piso de ancho del procedimiento, en caracteres, según cuántos términos entran. */
-const MINIMO_CARACTERES = {
-  ninguna: 6,
-  suma: 8,
-  resta: 8,
-  producto: 8,
-};
+const MINIMO_CARACTERES = { ninguna: 6, suma: 8, resta: 8, producto: 8 };
 
 export const binaryOpsModule = {
   id: 'binarias',
@@ -36,11 +19,7 @@ export const binaryOpsModule = {
   descripcion: 'Dos matrices entran, una sale.',
 
   mount(contenedor) {
-    const estado = {
-      a: Matrix.zeros(ORDEN),
-      b: Matrix.zeros(ORDEN),
-      operacion: null,
-    };
+    const estado = { a: Matrix.zeros(ORDEN), b: Matrix.zeros(ORDEN), operacion: null };
 
     const banco = document.createElement('div');
     banco.className = 'banco-binario';
@@ -51,13 +30,13 @@ export const binaryOpsModule = {
     const celdaR = crearCelda(banco, 'banco-binario__r');
     const celdaProcedimiento = crearCelda(banco, 'banco-binario__procedimiento');
 
-    // --- Matrices A y B ----------------------------------------------------
     const vistaA = new MatrixView({
       titulo: 'Matriz A',
       subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
       variante: 'a',
-      onSeleccion: (fila, columna) => abrirEditor('a', fila, columna),
+      onCambio: (fila, columna, valor) => guardar('a', fila, columna, valor),
+      onEmpezarEdicion: () => vistaB.cancelarEdicion(),
     });
     vistaA.mount(celdaA, estado.a);
     celdaA.appendChild(crearHerramientas('a'));
@@ -67,32 +46,17 @@ export const binaryOpsModule = {
       subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
       variante: 'b',
-      onSeleccion: (fila, columna) => abrirEditor('b', fila, columna),
+      onCambio: (fila, columna, valor) => guardar('b', fila, columna, valor),
+      onEmpezarEdicion: () => vistaA.cancelarEdicion(),
     });
     vistaB.mount(celdaB, estado.b);
     celdaB.appendChild(crearHerramientas('b'));
 
-    // --- Matriz resultado --------------------------------------------------
-    const vistaR = new MatrixView({
-      titulo: 'Resultado',
-      subtitulo: 'Se recalcula solo',
-      variante: 'r',
-    });
+    const vistaR = new MatrixView({ titulo: 'Resultado', subtitulo: 'Se recalcula solo', variante: 'r' });
     vistaR.mount(celdaR, estado.a);
-
-    // --- Editor ------------------------------------------------------------
-    // Uno solo para las dos matrices: el prefijo dice cuál se está editando,
-    // así que no hace falta un campo por matriz.
-    let enEdicion = null;
-
-    const editor = new CellEditor({
-      onConfirmar: (fila, columna, valor) => guardar(enEdicion, fila, columna, valor),
-      onCancelar: () => cerrarEdicion(),
-    });
 
     const vistas = { a: vistaA, b: vistaB };
 
-    // --- Selector de operación ---------------------------------------------
     const panel = document.createElement('section');
     panel.className = 'panel panel--angosto';
 
@@ -129,9 +93,7 @@ export const binaryOpsModule = {
     panel.appendChild(notaPanel);
 
     celdaOperacion.appendChild(panel);
-    editor.mount(celdaOperacion);
 
-    // --- Procedimiento -----------------------------------------------------
     const vistaProcedimiento = new ProcedureView({
       titulo: 'Procedimiento',
       subtitulo: 'La cuenta detrás de cada celda del resultado',
@@ -140,7 +102,6 @@ export const binaryOpsModule = {
 
     contenedor.appendChild(banco);
 
-    // --- Lógica ------------------------------------------------------------
     function crearHerramientas(clave) {
       const herramientas = document.createElement('div');
       herramientas.className = 'herramientas';
@@ -148,52 +109,38 @@ export const binaryOpsModule = {
       const azar = document.createElement('button');
       azar.type = 'button';
       azar.className = 'boton';
-      azar.textContent = 'Sortear valores';
+      azar.textContent = '🎲';
+      azar.setAttribute('aria-label', 'Sortear valores');
+      azar.title = 'Sortear valores';
       azar.addEventListener('click', () => reiniciar(clave, matrizAlAzar(ORDEN)));
 
       const cero = document.createElement('button');
       cero.type = 'button';
       cero.className = 'boton';
-      cero.textContent = 'Poner en cero';
+      cero.textContent = '🔄';
+      cero.setAttribute('aria-label', 'Poner en cero');
+      cero.title = 'Poner en cero';
       cero.addEventListener('click', () => reiniciar(clave, Matrix.zeros(ORDEN)));
 
       herramientas.append(azar, cero);
       return herramientas;
     }
 
-    /** Solo una celda en edición a la vez, sin importar de qué matriz sea. */
-    function abrirEditor(clave, fila, columna) {
-      const otra = clave === 'a' ? 'b' : 'a';
-      vistas[otra].limpiarSeleccion();
-      enEdicion = clave;
-      editor.prefijo = clave === 'a' ? 'Matriz A' : 'Matriz B';
-      editor.abrir(fila, columna, estado[clave].get(fila, columna).toString());
-    }
-
-    function cerrarEdicion() {
-      editor.cerrar();
-      vistaA.limpiarSeleccion();
-      vistaB.limpiarSeleccion();
-      enEdicion = null;
-    }
-
     function guardar(clave, fila, columna, valor) {
       estado[clave] = estado[clave].withValue(fila, columna, valor);
       vistas[clave].setMatriz(estado[clave]);
-      cerrarEdicion();
       recalcular();
     }
 
     function reiniciar(clave, matriz) {
       estado[clave] = matriz;
       vistas[clave].setMatriz(matriz);
-      cerrarEdicion();
+      vistas[clave].cancelarEdicion();
       recalcular();
     }
 
     function recalcular() {
       const { operacion, a, b } = estado;
-
       vistaR.setMatriz(aplicarBinaria(operacion, a, b));
 
       const definicion = buscarOperacion(operacion);
