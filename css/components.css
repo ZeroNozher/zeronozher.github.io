@@ -448,8 +448,9 @@
 }
 
 .matriz--procedimiento .matriz__grilla {
-  grid-template-columns: repeat(var(--columnas), var(--celda-ancho-proc, 140px));
+  grid-template-columns: max-content repeat(var(--columnas), var(--celda-ancho-proc, 140px));
 }
+
 
 .celda--procedimiento {
   justify-content: flex-end;
@@ -472,7 +473,9 @@
 }
 
 .matriz--procedimiento .matriz__etiqueta-fila {
-  height: var(--celda-alto-proc);
+  height: auto;
+  align-items: center;
+  padding-right: var(--esp-2);
 }
 
 /* El origen de cada término se lee por el color: A, B, o el resultado.
@@ -579,7 +582,7 @@
   }
 
   .matriz--procedimiento .matriz__grilla {
-    grid-template-columns: repeat(var(--columnas), var(--celda-ancho-proc-movil, 100px));
+    grid-template-columns: max-content repeat(var(--columnas), var(--celda-ancho-proc-movil, 100px));
   }
 
   .celda--procedimiento {
@@ -596,8 +599,6 @@
   }
 
   .matriz--procedimiento .matriz__etiqueta-fila {
-    height: auto;
-    min-height: var(--celda-alto-proc);
     align-items: flex-start;
     padding-top: var(--esp-2);
   }

@@ -62,7 +62,7 @@ export class NumberField {
     const input = document.createElement('input');
     input.type = 'text';
     input.className = 'campo__input';
-    input.inputMode = this.modo === 'entero' ? 'numeric' : 'text';
+    input.inputMode = 'text';
     input.autocomplete = 'off';
     input.spellcheck = false;
     input.placeholder = this.placeholder;

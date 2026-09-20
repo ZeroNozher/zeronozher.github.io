@@ -56,9 +56,6 @@ export class ProcedureView {
     const cuerpo = document.createElement('div');
     cuerpo.className = 'matriz__cuerpo';
 
-    const etiquetas = document.createElement('div');
-    etiquetas.className = 'matriz__filas-etiquetas';
-
     const grilla = document.createElement('div');
     grilla.className = 'matriz__grilla';
     grilla.style.setProperty('--columnas', columnas);
@@ -67,7 +64,7 @@ export class ProcedureView {
       const etiqueta = document.createElement('span');
       etiqueta.className = 'matriz__etiqueta-fila';
       etiqueta.textContent = `F${fila + 1}`;
-      etiquetas.appendChild(etiqueta);
+      grilla.appendChild(etiqueta);
 
       this.celdas[fila] = [];
       for (let columna = 0; columna < columnas; columna += 1) {
@@ -83,7 +80,7 @@ export class ProcedureView {
       }
     }
 
-    cuerpo.append(etiquetas, grilla);
+    cuerpo.appendChild(grilla);
     raiz.append(encabezado, cuerpo);
     contenedor.appendChild(raiz);
 
