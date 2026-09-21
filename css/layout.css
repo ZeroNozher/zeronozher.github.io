@@ -77,9 +77,6 @@ input {
 
 .banco__entrada {
   grid-area: entrada;
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-4);
 }
 
 .banco__panel {
@@ -114,13 +111,6 @@ input {
   gap: var(--esp-5);
 }
 
-.banco-binario__operacion {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--esp-2);
-}
-
 .banco-binario__procedimiento {
   min-width: 0;
 }
@@ -139,27 +129,6 @@ input {
 
   .banco__ayuda {
     max-width: none;
-  }
-
-  .banco__entrada {
-    display: grid;
-    grid-template-columns: 60% 40%;
-    grid-template-areas: 'matriz botones';
-    column-gap: var(--esp-4);
-    align-items: start;
-  }
-
-  .banco__entrada > .matriz {
-    grid-area: matriz;
-    min-width: 0;
-  }
-
-  .banco__entrada > .herramientas {
-    grid-area: botones;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--esp-2);
-    margin-top: 0;
   }
 }
 

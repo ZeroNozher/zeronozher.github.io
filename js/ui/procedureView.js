@@ -1,36 +1,20 @@
-/** Texto plano de una línea, para comparar y para medir. */
 function lineaATexto(linea) {
   return linea.map((t) => t.texto).join('');
 }
 
-/** Texto plano de toda la celda (todas sus líneas), para detectar cambios. */
 function celdaATexto(lineas) {
   return lineas.map(lineaATexto).join(' ');
 }
 
-/**
- * Vista del procedimiento.
- *
- * Misma anatomía que MatrixView —encabezado, etiquetas de fila, grilla—
- * pero cada celda lleva una cuenta partida en tokens, y cada token se
- * pinta según de dónde sale: A, B, el resultado, o un operador.
- *
- * Es más chica que las otras matrices a propósito: acá el protagonista
- * es la cuenta, no el número.
- */
 
-const DURACION_SALIDA = 170; // ms — igual que en matrixView.js
+const DURACION_SALIDA = 170;
 const PISO_LINEA = 6;
 
 export class ProcedureView {
-  /**
-   * @param {object}  opciones
-   * @param {string}  opciones.titulo
-   * @param {string} [opciones.subtitulo]
-   */
-  constructor({ titulo, subtitulo = '' }) {
+  constructor({ titulo, subtitulo = '', controles = null }) {
     this.titulo = titulo;
     this.subtitulo = subtitulo;
+    this.controles = controles;
     this.celdas = [];
     this.filas = null;
     this.minCaracteres = PISO_LINEA;
@@ -43,15 +27,24 @@ export class ProcedureView {
     const encabezado = document.createElement('header');
     encabezado.className = 'matriz__encabezado';
 
+    const texto = document.createElement('div');
+    texto.className = 'matriz__encabezado-texto';
+
     const titulo = document.createElement('h3');
     titulo.className = 'matriz__titulo';
     titulo.textContent = this.titulo;
-    encabezado.appendChild(titulo);
+    texto.appendChild(titulo);
 
     const subtitulo = document.createElement('p');
     subtitulo.className = 'matriz__subtitulo';
     subtitulo.textContent = this.subtitulo;
-    encabezado.appendChild(subtitulo);
+    texto.appendChild(subtitulo);
+
+    encabezado.appendChild(texto);
+
+    if (this.controles) {
+      encabezado.appendChild(this.controles);
+    }
 
     const cuerpo = document.createElement('div');
     cuerpo.className = 'matriz__cuerpo';

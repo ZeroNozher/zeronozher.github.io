@@ -1,11 +1,3 @@
-/**
- * Vista de una matriz.
- *
- * Se construye una sola vez y después solo se actualiza el texto de las
- * celdas que efectivamente cambiaron. Esa comparación es la que permite
- * animar únicamente lo que se modificó.
-*/
-
 import { Fraction } from '../core/fraction.js';
 import { filtrarNumero } from './numberField.js';
 
@@ -18,6 +10,7 @@ export class MatrixView {
     subtitulo = '',
     editable = false,
     variante = '',
+    controles = null,
     onCambio = null,
     onEmpezarEdicion = null,
   }) {
@@ -25,6 +18,7 @@ export class MatrixView {
     this.subtitulo = subtitulo;
     this.editable = editable;
     this.variante = variante;
+    this.controles = controles;
     this.onCambio = onCambio;
     this.onEmpezarEdicion = onEmpezarEdicion;
 
@@ -43,17 +37,26 @@ export class MatrixView {
 
     const encabezado = document.createElement('header');
     encabezado.className = 'matriz__encabezado';
-
+    
+    const texto = document.createElement('div');
+    texto.className = 'matriz__encabezado-texto';
+    
     const titulo = document.createElement('h3');
     titulo.className = 'matriz__titulo';
     titulo.textContent = this.titulo;
-    encabezado.appendChild(titulo);
-
+    texto.appendChild(titulo);
+    
     if (this.subtitulo) {
       const subtitulo = document.createElement('p');
       subtitulo.className = 'matriz__subtitulo';
       subtitulo.textContent = this.subtitulo;
-      encabezado.appendChild(subtitulo);
+      texto.appendChild(subtitulo);
+    }
+
+    encabezado.appendChild(texto);
+
+    if (this.controles) {
+      encabezado.appendChild(this.controles);
     }
 
     const cuerpo = document.createElement('div');

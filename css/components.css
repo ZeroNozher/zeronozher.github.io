@@ -44,15 +44,16 @@
   font-size: var(--tam-chico);
 }
 
-.matriz__cuerpo {
+.matriz__encabezado {
   display: flex;
-  gap: var(--esp-3);
-  margin-top: var(--esp-4);
-  /* Sin efecto en escritorio, donde la tarjeta ya mide justo lo que su
-     contenido necesita. Con la tarjeta estirada a todo el ancho en mobile
-     (grilla de una sola columna), evita que la matriz quede pegada a la
-     izquierda dentro de una tarjeta mucho más ancha que ella. */
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--esp-2);
+}
+
+.matriz__encabezado-texto {
+  min-width: 0;
 }
 
 .matriz__filas-etiquetas {
@@ -208,7 +209,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--esp-2);
-  margin-top: var(--esp-4);
 }
 
 /* Botones -------------------------------------------------------------- */
@@ -273,14 +273,6 @@
   border-color: var(--acento);
   background: var(--acento);
   color: #fff;
-}
-
-.selector-operacion__nota {
-  margin-top: var(--esp-2);
-  max-width: 14ch;
-  text-align: center;
-  color: var(--tinta-tenue);
-  font-size: var(--tam-chico);
 }
 
 /* Panel de operaciones -------------------------------------------------- */

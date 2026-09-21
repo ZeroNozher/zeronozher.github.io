@@ -25,7 +25,6 @@ export const binaryOpsModule = {
     banco.className = 'banco-binario';
 
     const celdaA = crearCelda(banco, 'banco-binario__a');
-    const celdaOperacion = crearCelda(banco, 'banco-binario__operacion');
     const celdaB = crearCelda(banco, 'banco-binario__b');
     const celdaProcedimiento = crearCelda(banco, 'banco-binario__procedimiento');
 
@@ -34,26 +33,26 @@ export const binaryOpsModule = {
       subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
       variante: 'a',
+      controles: crearHerramientas('a'),
       onCambio: (fila, columna, valor) => guardar('a', fila, columna, valor),
       onEmpezarEdicion: () => vistaB.cancelarEdicion(),
     });
     vistaA.mount(celdaA, estado.a);
-    celdaA.appendChild(crearHerramientas('a'));
 
     const vistaB = new MatrixView({
       titulo: 'Matriz B',
       subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
       variante: 'b',
+      controles: crearHerramientas('b'),
       onCambio: (fila, columna, valor) => guardar('b', fila, columna, valor),
       onEmpezarEdicion: () => vistaA.cancelarEdicion(),
     });
     vistaB.mount(celdaB, estado.b);
-    celdaB.appendChild(crearHerramientas('b'));
 
     const vistas = { a: vistaA, b: vistaB };
 
-    // --- Selector de operación: 3 íconos toggle -----------------------------
+    // --- Selector de operación: va en la cabecera de Procedimiento ---------
     const selector = document.createElement('div');
     selector.className = 'selector-operacion';
     selector.setAttribute('role', 'group');
@@ -74,17 +73,11 @@ export const binaryOpsModule = {
       botonesOperacion.set(operacion.id, boton);
     });
 
-    celdaOperacion.appendChild(selector);
-
-    const nota = document.createElement('p');
-    nota.className = 'selector-operacion__nota';
-    nota.textContent = 'Sin elegir, el resultado es A.';
-    celdaOperacion.appendChild(nota);
-
     // --- Procedimiento -----------------------------------------------------
     const vistaProcedimiento = new ProcedureView({
       titulo: 'Procedimiento',
       subtitulo: 'La cuenta detrás de cada celda del resultado',
+      controles: selector,
     });
     vistaProcedimiento.mount(celdaProcedimiento, ORDEN, ORDEN);
 
@@ -149,7 +142,7 @@ export const binaryOpsModule = {
       } else {
         vistaProcedimiento.setAnchoMinimo(MINIMO_CARACTERES.ninguna);
         vistaProcedimiento.setSubtitulo('Sin operación, el resultado es A sin tocar');
-        vistaProcedimiento.setVariante('a');
+        vistaProcedimiento.setVariante('a'); // P toma el color de A cuando no hay operación
       }
       vistaProcedimiento.setFilas(explicarBinaria(operacion, a, b));
     }

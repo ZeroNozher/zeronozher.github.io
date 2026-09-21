@@ -30,6 +30,7 @@ export const elementaryOpsModule = {
       titulo: 'Entrada',
       subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
+      controles: crearHerramientas(),
       onCambio: (fila, columna, valor) => {
         estado.entrada = estado.entrada.withValue(fila, columna, valor);
         vistaEntrada.setMatriz(estado.entrada);
@@ -38,28 +39,29 @@ export const elementaryOpsModule = {
     });
     vistaEntrada.mount(celdaEntrada, estado.entrada);
 
-    const herramientas = document.createElement('div');
-    herramientas.className = 'herramientas';
+    function crearHerramientas() {
+      const herramientas = document.createElement('div');
+      herramientas.className = 'herramientas';
 
-const botonAzar = document.createElement('button');
-    botonAzar.type = 'button';
-    botonAzar.className = 'boton';
-    botonAzar.textContent = '🎲';
-    botonAzar.setAttribute('aria-label', 'Sortear valores');
-    botonAzar.title = 'Sortear valores';
-    botonAzar.addEventListener('click', () => reiniciar(matrizAlAzar(ORDEN)));
-    herramientas.appendChild(botonAzar);
+      const azar = document.createElement('button');
+      azar.type = 'button';
+      azar.className = 'boton';
+      azar.textContent = '🎲';
+      azar.setAttribute('aria-label', 'Sortear valores');
+      azar.title = 'Sortear valores';
+      azar.addEventListener('click', () => reiniciar(matrizAlAzar(ORDEN)));
 
-    const botonVaciar = document.createElement('button');
-    botonVaciar.type = 'button';
-    botonVaciar.className = 'boton';
-    botonVaciar.textContent = '🔄';
-    botonVaciar.setAttribute('aria-label', 'Poner en cero');
-    botonVaciar.title = 'Poner en cero';
-    botonVaciar.addEventListener('click', () => reiniciar(Matrix.zeros(ORDEN)));
-    herramientas.appendChild(botonVaciar);
+      const cero = document.createElement('button');
+      cero.type = 'button';
+      cero.className = 'boton';
+      cero.textContent = '🔄';
+      cero.setAttribute('aria-label', 'Poner en cero');
+      cero.title = 'Poner en cero';
+      cero.addEventListener('click', () => reiniciar(Matrix.zeros(ORDEN)));
 
-    celdaEntrada.appendChild(herramientas);
+      herramientas.append(azar, cero);
+      return herramientas;
+    }
 
     const vistaResultado = new MatrixView({
       titulo: 'Resultado',
