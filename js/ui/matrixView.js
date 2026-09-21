@@ -37,15 +37,15 @@ export class MatrixView {
 
     const encabezado = document.createElement('header');
     encabezado.className = 'matriz__encabezado';
-    
+
     const texto = document.createElement('div');
     texto.className = 'matriz__encabezado-texto';
-    
+
     const titulo = document.createElement('h3');
     titulo.className = 'matriz__titulo';
     titulo.textContent = this.titulo;
     texto.appendChild(titulo);
-    
+
     if (this.subtitulo) {
       const subtitulo = document.createElement('p');
       subtitulo.className = 'matriz__subtitulo';
@@ -66,14 +66,11 @@ export class MatrixView {
     grilla.className = 'matriz__grilla';
     grilla.style.setProperty('--columnas', matriz.columnas);
 
-    const etiquetas = document.createElement('div');
-    etiquetas.className = 'matriz__filas-etiquetas';
-
     for (let fila = 0; fila < matriz.orden; fila += 1) {
       const etiqueta = document.createElement('span');
       etiqueta.className = 'matriz__etiqueta-fila';
       etiqueta.textContent = `F${fila + 1}`;
-      etiquetas.appendChild(etiqueta);
+      grilla.appendChild(etiqueta);
 
       this.celdas[fila] = [];
       for (let columna = 0; columna < matriz.columnas; columna += 1) {
@@ -83,7 +80,6 @@ export class MatrixView {
       }
     }
 
-    cuerpo.appendChild(etiquetas);
     cuerpo.appendChild(grilla);
 
     raiz.appendChild(encabezado);
@@ -129,7 +125,7 @@ export class MatrixView {
     const input = document.createElement('input');
     input.type = 'text';
     input.className = 'celda__input';
-    input.inputMode = 'text'; // 'numeric' esconde el signo menos en varios teclados
+    input.inputMode = 'text';
     input.autocomplete = 'off';
     input.spellcheck = false;
     input.value = actual;
@@ -151,10 +147,6 @@ export class MatrixView {
     });
 
     input.addEventListener('blur', () => {
-      // Tocar afuera de la celda también debe cerrar la edición.
-      // El setTimeout deja que un click en OTRA celda primero dispare su
-      // propio iniciarEdicion (que ya cierra esta edición); si eso ya pasó,
-      // this.edicion apunta a otra celda y esta llamada no hace nada.
       window.setTimeout(() => {
         if (this.edicion && this.edicion.fila === fila && this.edicion.columna === columna) {
           this.confirmarOCancelar();
@@ -179,7 +171,7 @@ export class MatrixView {
   }
 
   confirmar(fila, columna, texto) {
-    if (!this.validar(texto)) return; // Enter con valor inválido: no hace nada
+    if (!this.validar(texto)) return;
     const valor = Fraction.parse(texto);
     this.cerrarEdicionDom();
     if (this.onCambio) this.onCambio(fila, columna, valor);

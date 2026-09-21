@@ -28,7 +28,6 @@ export const elementaryOpsModule = {
 
     const vistaEntrada = new MatrixView({
       titulo: 'Entrada',
-      subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
       controles: crearHerramientas(),
       onCambio: (fila, columna, valor) => {
@@ -65,7 +64,6 @@ export const elementaryOpsModule = {
 
     const vistaResultado = new MatrixView({
       titulo: 'Resultado',
-      subtitulo: 'Cada operación se aplica acá',
     });
     vistaResultado.mount(celdaResultado, estado.resultado);
 
@@ -75,13 +73,6 @@ export const elementaryOpsModule = {
       onFilasActivas: (filas) => vistaResultado.destacarFilas(filas),
     });
     panel.mount(celdaPanel, celdaOpciones);
-
-    const ayuda = document.createElement('p');
-    ayuda.className = 'banco__ayuda-texto';
-    ayuda.textContent =
-      'Para volver atrás aplicá la operación inversa: dividí por el mismo factor, ' +
-      'sumá el factor opuesto, o repetí el intercambio.';
-    celdaAyuda.appendChild(ayuda);
 
     contenedor.appendChild(banco);
 

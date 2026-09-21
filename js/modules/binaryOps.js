@@ -30,7 +30,6 @@ export const binaryOpsModule = {
 
     const vistaA = new MatrixView({
       titulo: 'Matriz A',
-      subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
       variante: 'a',
       controles: crearHerramientas('a'),
@@ -41,7 +40,6 @@ export const binaryOpsModule = {
 
     const vistaB = new MatrixView({
       titulo: 'Matriz B',
-      subtitulo: 'Tocá una celda para cambiar su valor',
       editable: true,
       variante: 'b',
       controles: crearHerramientas('b'),
@@ -76,7 +74,6 @@ export const binaryOpsModule = {
     // --- Procedimiento -----------------------------------------------------
     const vistaProcedimiento = new ProcedureView({
       titulo: 'Procedimiento',
-      subtitulo: 'La cuenta detrás de cada celda del resultado',
       controles: selector,
     });
     vistaProcedimiento.mount(celdaProcedimiento, ORDEN, ORDEN);
@@ -137,11 +134,9 @@ export const binaryOpsModule = {
       const definicion = buscarOperacion(operacion);
       if (definicion) {
         vistaProcedimiento.setAnchoMinimo(MINIMO_CARACTERES[definicion.id]);
-        vistaProcedimiento.setSubtitulo(definicion.formula);
         vistaProcedimiento.setVariante('r');
       } else {
         vistaProcedimiento.setAnchoMinimo(MINIMO_CARACTERES.ninguna);
-        vistaProcedimiento.setSubtitulo('Sin operación, el resultado es A sin tocar');
         vistaProcedimiento.setVariante('a'); // P toma el color de A cuando no hay operación
       }
       vistaProcedimiento.setFilas(explicarBinaria(operacion, a, b));

@@ -56,12 +56,6 @@
   min-width: 0;
 }
 
-.matriz__filas-etiquetas {
-  display: flex;
-  flex-direction: column;
-  gap: var(--celda-gap);
-}
-
 .matriz__etiqueta-fila {
   display: flex;
   align-items: center;
@@ -73,7 +67,7 @@
 
 .matriz__grilla {
   display: grid;
-  grid-template-columns: repeat(var(--columnas), var(--celda-ancho));
+  grid-template-columns: max-content repeat(var(--columnas), var(--celda-ancho));
   gap: var(--celda-gap);
 }
 
@@ -363,12 +357,7 @@
   font-size: var(--tam-chico);
 }
 
-/* Controles -------------------------------------------------------------
-   Grilla de tres filas: etiquetas arriba, controles al medio, avisos abajo.
-   Cada campo usa display:contents para que sus tres partes caigan en esas
-   filas en vez de apilarse por su cuenta; así "Fila base", "Factor k" y
-   "Fila a modificar" quedan alineados entre sí, y "×" y "se suma a"
-   también.                                                                */
+/* Controles */
 
 .controles {
   display: grid;
@@ -501,9 +490,6 @@
   padding-right: var(--esp-2);
 }
 
-/* El origen de cada término se lee por el color: A, B, o el resultado.
-   Los operadores van con el color del resultado, que es lo que la cuenta
-   está construyendo. */
 .token--a,
 .token--b,
 .token--r,
@@ -524,7 +510,6 @@
   color: var(--r-texto);
 }
 
-/* Sin operación elegida P es A sin tocar, así que todo va en el tono de A. */
 .matriz--procedimiento.matriz--a .token--a,
 .matriz--procedimiento.matriz--a .token--b,
 .matriz--procedimiento.matriz--a .token--r,
@@ -545,10 +530,6 @@
     display: grid;
   }
 
-  /* El signo ("×", "se suma a") se arma con las mismas tres partes que un
-     campo para alinearlo en la grilla de escritorio; acá esa alineación
-     ya no aplica, así que la etiqueta y el aviso vacíos no aportan nada
-     y solo suman líneas en blanco. */
   .controles .campo--signo .campo__etiqueta,
   .controles .campo--signo .campo__aviso {
     display: none;
@@ -565,10 +546,6 @@
   }
 }
 
-/* Nivel 3 (400px): declutter de texto de apoyo. El resumen de cada
-   operación ("Dos filas cambian de lugar.") es una ayuda de más, no
-   información nueva — el nombre y la fórmula ya identifican la
-   operación. */
 @media (max-width: 400px) {
   .bloque__resumen {
     display: none;
