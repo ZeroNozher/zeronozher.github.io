@@ -45,25 +45,6 @@ input {
   outline-offset: 2px;
 }
 
-/* Cabecera ------------------------------------------------------------ */
-
-.cabecera {
-  max-width: 1180px;
-  margin: 0 auto var(--esp-6);
-}
-
-.cabecera__titulo {
-  font-size: var(--tam-titulo);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.cabecera__bajada {
-  margin-top: var(--esp-2);
-  max-width: 56ch;
-  color: var(--tinta-suave);
-}
-
 /* Pestañas ------------------------------------------------------------ */
 
 .app {
@@ -127,37 +108,21 @@ input {
 /* Banco binario --------------------------------------------------------- */
 
 .banco-binario {
-  display: grid;
-  grid-template-columns: repeat(4, max-content);
-  grid-template-areas:
-    'a operacion b r'
-    'proc proc proc proc';
-  justify-content: start;
-  column-gap: var(--esp-5);
-  row-gap: var(--esp-6);
-  align-items: start;
-}
-
-.banco-binario__a {
-  grid-area: a;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--esp-5);
 }
 
 .banco-binario__operacion {
-  grid-area: operacion;
-  display: grid;
-  gap: var(--esp-3);
-}
-
-.banco-binario__b {
-  grid-area: b;
-}
-
-.banco-binario__r {
-  grid-area: r;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-2);
 }
 
 .banco-binario__procedimiento {
-  grid-area: proc;
+  min-width: 0;
 }
 
 /* Responsive */
@@ -198,49 +163,7 @@ input {
   }
 }
 
-@media (max-width: 1150px) {
-  .banco-binario {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      'a          b'
-      'operacion  operacion'
-      'r          r'
-      'proc       proc';
-    column-gap: var(--esp-4);
-    justify-content: normal;
-  }
-
-  .banco-binario__r {
-    width: 60%;
-    margin: 0 auto;
-  }
-
-  .panel--angosto {
-    width: 100%;
-  }
-
-  .campo__select--operacion {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .banco-binario {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'a'
-      'b'
-      'operacion'
-      'r'
-      'proc';
-  }
-}
-
 @media (max-width: 400px) {
-  .cabecera__bajada {
-    display: none;
-  }
-
   .banco__ayuda {
     display: none;
   }

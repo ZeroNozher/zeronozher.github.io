@@ -3,7 +3,6 @@ import { matrizAlAzar } from '../core/random.js';
 import {
   OPERACIONES_BINARIAS,
   buscarOperacion,
-  aplicarBinaria,
   explicarBinaria,
 } from '../core/matrixOps.js';
 import { MatrixView } from '../ui/matrixView.js';
@@ -12,6 +11,7 @@ import { ProcedureView } from '../ui/procedureView.js';
 const ORDEN = 3;
 
 const MINIMO_CARACTERES = { ninguna: 6, suma: 8, resta: 8, producto: 8 };
+const ICONOS_OPERACION = { suma: '+', resta: '−', producto: '×' };
 
 export const binaryOpsModule = {
   id: 'binarias',
@@ -27,7 +27,6 @@ export const binaryOpsModule = {
     const celdaA = crearCelda(banco, 'banco-binario__a');
     const celdaOperacion = crearCelda(banco, 'banco-binario__operacion');
     const celdaB = crearCelda(banco, 'banco-binario__b');
-    const celdaR = crearCelda(banco, 'banco-binario__r');
     const celdaProcedimiento = crearCelda(banco, 'banco-binario__procedimiento');
 
     const vistaA = new MatrixView({
@@ -52,48 +51,37 @@ export const binaryOpsModule = {
     vistaB.mount(celdaB, estado.b);
     celdaB.appendChild(crearHerramientas('b'));
 
-    const vistaR = new MatrixView({ titulo: 'Resultado', subtitulo: 'Se recalcula solo', variante: 'r' });
-    vistaR.mount(celdaR, estado.a);
-
     const vistas = { a: vistaA, b: vistaB };
 
-    const panel = document.createElement('section');
-    panel.className = 'panel panel--angosto';
+    // --- Selector de operación: 3 íconos toggle -----------------------------
+    const selector = document.createElement('div');
+    selector.className = 'selector-operacion';
+    selector.setAttribute('role', 'group');
+    selector.setAttribute('aria-label', 'Operación');
 
-    const tituloPanel = document.createElement('h3');
-    tituloPanel.className = 'panel__titulo';
-    tituloPanel.textContent = 'Operación';
-    panel.appendChild(tituloPanel);
-
-    const select = document.createElement('select');
-    select.className = 'campo__select campo__select--operacion';
-
-    const sinElegir = document.createElement('option');
-    sinElegir.value = '';
-    sinElegir.textContent = 'Seleccionar operación';
-    select.appendChild(sinElegir);
+    const botonesOperacion = new Map();
 
     OPERACIONES_BINARIAS.forEach((operacion) => {
-      const opcion = document.createElement('option');
-      opcion.value = operacion.id;
-      opcion.textContent = operacion.nombre;
-      select.appendChild(opcion);
+      const boton = document.createElement('button');
+      boton.type = 'button';
+      boton.className = 'boton boton-operador';
+      boton.textContent = ICONOS_OPERACION[operacion.id];
+      boton.setAttribute('aria-label', operacion.nombre);
+      boton.setAttribute('aria-pressed', 'false');
+      boton.title = operacion.nombre;
+      boton.addEventListener('click', () => elegirOperacion(operacion.id));
+      selector.appendChild(boton);
+      botonesOperacion.set(operacion.id, boton);
     });
 
-    select.addEventListener('change', () => {
-      estado.operacion = select.value || null;
-      recalcular();
-    });
+    celdaOperacion.appendChild(selector);
 
-    panel.appendChild(select);
+    const nota = document.createElement('p');
+    nota.className = 'selector-operacion__nota';
+    nota.textContent = 'Sin elegir, el resultado es A.';
+    celdaOperacion.appendChild(nota);
 
-    const notaPanel = document.createElement('p');
-    notaPanel.className = 'panel__nota';
-    notaPanel.textContent = 'Sin operación elegida, el resultado es A sin tocar.';
-    panel.appendChild(notaPanel);
-
-    celdaOperacion.appendChild(panel);
-
+    // --- Procedimiento -----------------------------------------------------
     const vistaProcedimiento = new ProcedureView({
       titulo: 'Procedimiento',
       subtitulo: 'La cuenta detrás de cada celda del resultado',
@@ -102,6 +90,7 @@ export const binaryOpsModule = {
 
     contenedor.appendChild(banco);
 
+    // --- Lógica --------------------------------------------------------------
     function crearHerramientas(clave) {
       const herramientas = document.createElement('div');
       herramientas.className = 'herramientas';
@@ -126,6 +115,16 @@ export const binaryOpsModule = {
       return herramientas;
     }
 
+    function elegirOperacion(id) {
+      estado.operacion = estado.operacion === id ? null : id;
+      botonesOperacion.forEach((boton, clave) => {
+        const activo = clave === estado.operacion;
+        boton.classList.toggle('boton-operador--activo', activo);
+        boton.setAttribute('aria-pressed', String(activo));
+      });
+      recalcular();
+    }
+
     function guardar(clave, fila, columna, valor) {
       estado[clave] = estado[clave].withValue(fila, columna, valor);
       vistas[clave].setMatriz(estado[clave]);
@@ -141,7 +140,6 @@ export const binaryOpsModule = {
 
     function recalcular() {
       const { operacion, a, b } = estado;
-      vistaR.setMatriz(aplicarBinaria(operacion, a, b));
 
       const definicion = buscarOperacion(operacion);
       if (definicion) {

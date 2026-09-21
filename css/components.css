@@ -249,6 +249,40 @@
   cursor: not-allowed;
 }
 
+/* Selector de operación (3 íconos toggle) -------------------------------- */
+
+.selector-operacion {
+  display: flex;
+  gap: var(--esp-2);
+}
+
+.boton-operador {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fuente-numero);
+  font-size: var(--tam-subtitulo);
+  line-height: 1;
+}
+
+.boton-operador--activo,
+.boton-operador--activo:hover {
+  border-color: var(--acento);
+  background: var(--acento);
+  color: #fff;
+}
+
+.selector-operacion__nota {
+  margin-top: var(--esp-2);
+  max-width: 14ch;
+  text-align: center;
+  color: var(--tinta-tenue);
+  font-size: var(--tam-chico);
+}
+
 /* Panel de operaciones -------------------------------------------------- */
 
 .panel {
@@ -439,13 +473,8 @@
 
 /* Procedimiento ---------------------------------------------------------- */
 
-.matriz--procedimiento {
-  width: 100%;
-}
-
 .matriz--procedimiento .matriz__grilla {
   grid-template-columns: max-content repeat(var(--columnas), var(--celda-ancho-proc, 100px));
-  min-width: 0;
   max-width: 100%;
   overflow-x: auto;
   padding-bottom: var(--esp-1);
@@ -509,23 +538,6 @@
 .matriz--procedimiento.matriz--a .token--r,
 .matriz--procedimiento.matriz--a .token--op {
   color: var(--a-texto);
-}
-
-/* Panel angosto del selector de operación -------------------------------- */
-
-.panel--angosto {
-  display: grid;
-  gap: var(--esp-3);
-  width: max-content;
-}
-
-.campo__select--operacion {
-  width: 100%;
-  min-width: 190px;
-}
-
-.panel--angosto .panel__nota {
-  max-width: 22ch;
 }
 
 /* Responsive */
