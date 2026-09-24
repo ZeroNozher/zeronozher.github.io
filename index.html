@@ -1,27 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Banco de matrices</title>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hub de herramientas de estudio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E8A33D'/%3E%3Cpath d='M18 18h12v12H18zM34 18h12v12H34zM18 34h12v12H18zM34 34h12v12H34z' fill='%23101826'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <p class="kicker">GitHub Pages</p>
+    <h1>Herramientas de estudio</h1>
+    <p>Recursos que armé para cursar y para ayudar a mis compañeros. Elige una para entrar.</p>
+  </header>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <section class="grid" aria-label="Proyectos">
+    <a class="card" href="preparcial-orga-I/">
+      <div class="card-top"><span class="num">01</span><span class="tag ok">Disponible</span></div>
+      <h2>Preparcial · Organización de Computadoras I</h2>
+      <p>Simulacro de examen resuelto paso a paso: cambio de base, complemento a 2, punto fijo, float32, endianismo y ASCII.</p>
+      <span class="go">Abrir guía <i aria-hidden="true">→</i></span>
+    </a>
 
-    <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/components.css" />
-  </head>
+    <a class="card wip" href="tool-algebra-lineal/" data-wip>
+      <div class="card-top"><span class="num">02</span><span class="tag wip">En construcción</span></div>
+      <h2>Herramientas de álgebra lineal</h2>
+      <p>Herramientas pensadas para compañeros de álgebra lineal.</p>
+      <p class="notice"><b>Aviso:</b> todavía se está armando. Puede tener errores, funciones incompletas o cambiar sin previo aviso.</p>
+      <span class="go">Abrir de todos modos <i aria-hidden="true">→</i></span>
+    </a>
+  </section>
+</main>
 
-  <body>
+<footer class="foot">Hub de proyectos · GitHub Pages</footer>
 
-    <main id="app" class="app"></main>
+<dialog id="wip-dialog" aria-labelledby="wip-title">
+  <h2 id="wip-title">Herramienta en construcción</h2>
+  <p>Esta herramienta todavía se está desarrollando: puede fallar, estar incompleta o cambiar sin aviso. ¿Quieres entrar igualmente?</p>
+  <form method="dialog" class="dlg-actions">
+    <button class="btn ghost" value="cancel">Quedarme</button>
+    <a class="btn" id="wip-go" href="#">Entrar igual</a>
+  </form>
+</dialog>
 
-    <script type="module" src="js/main.js"></script>
-  </body>
+<script src="app.js"></script>
+</body>
 </html>

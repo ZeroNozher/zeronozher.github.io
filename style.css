@@ -1,0 +1,68 @@
+:root{
+  --bg:#101826; --bg-soft:#0c1220; --paper:#182236; --paper-2:#1e2a40;
+  --line:#2c3a52; --ink:#EDEAE0; --ink-dim:#9fabc2; --ink-faint:#6b7690;
+  --amber:#E8A33D; --amber-ink:#3a2a0d; --amber-text:#E8A33D; --teal:#4FB3A9;
+  --font-display:'Spectral', serif; --font-sans:'IBM Plex Sans', sans-serif; --font-mono:'IBM Plex Mono', monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#F5F3EC; --bg-soft:#EEEBE1; --paper:#FFFFFF; --paper-2:#F1EFE6;
+    --line:#DCD7C8; --ink:#20232b; --ink-dim:#565c6c; --ink-faint:#8b8f9c;
+    --amber-text:#8a5200; color-scheme: light;
+  }
+}
+*{ box-sizing:border-box; }
+html,body{ min-height:100%; }
+body{
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-sans); line-height:1.55;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+::selection{ background:var(--amber); color:var(--amber-ink); }
+
+.wrap{ max-width:960px; margin:0 auto; padding:56px 20px 30px; }
+.hero{ margin-bottom:34px; }
+.kicker{ font-family:var(--font-mono); font-size:12.5px; color:var(--amber-text); margin:0 0 10px; }
+.hero h1{ font-family:var(--font-display); font-weight:700; font-size:clamp(28px,6vw,44px); line-height:1.15; margin:0 0 14px; }
+.hero p:last-child{ color:var(--ink-dim); max-width:56ch; margin:0; font-size:16px; }
+
+.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:18px; }
+.card{
+  display:flex; flex-direction:column; gap:10px; padding:22px; text-decoration:none; color:inherit;
+  background:var(--paper); border:1px solid var(--line); border-radius:14px;
+  transition:transform .2s ease, border-color .2s ease;
+}
+.card:hover{ transform:translateY(-3px); border-color:var(--amber); }
+.card:focus-visible{ outline:2px solid var(--amber); outline-offset:3px; }
+.card.wip{ border-style:dashed; }
+.card-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.num{ font-family:var(--font-mono); font-weight:600; font-size:13px; background:var(--amber); color:var(--amber-ink); padding:3px 7px; border-radius:6px; }
+.tag{ font-family:var(--font-mono); font-size:11.5px; padding:3px 9px; border-radius:999px; border:1px solid var(--line); color:var(--ink-dim); }
+.tag.ok{ border-color:var(--teal); }
+.tag.wip{ border-color:var(--amber); border-style:dashed; }
+.card h2{ font-family:var(--font-display); font-size:21px; line-height:1.25; margin:6px 0 0; }
+.card p{ margin:0; color:var(--ink-dim); font-size:14.5px; }
+.card .notice{ background:var(--bg-soft); border:1px solid var(--line); border-left:3px solid var(--amber); border-radius:8px; padding:10px 12px; font-size:13.5px; }
+.notice b{ color:var(--ink); }
+.go{ margin-top:auto; padding-top:8px; font-family:var(--font-mono); font-size:13px; font-weight:600; color:var(--amber-text); }
+.go i{ font-style:normal; display:inline-block; transition:transform .2s ease; }
+.card:hover .go i{ transform:translateX(4px); }
+
+.foot{ max-width:960px; margin:0 auto; padding:10px 20px 40px; color:var(--ink-faint); font-size:12.5px; }
+
+dialog{ width:min(92vw,420px); padding:22px; border:1px solid var(--line); border-radius:14px; background:var(--paper); color:var(--ink); }
+dialog::backdrop{ background:rgba(6,10,18,.65); }
+dialog h2{ font-family:var(--font-display); font-size:21px; margin:0 0 8px; }
+dialog p{ margin:0 0 18px; color:var(--ink-dim); font-size:14.5px; }
+.dlg-actions{ display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; margin:0; }
+.btn{
+  font-family:var(--font-mono); font-size:13px; font-weight:600; padding:9px 16px; border-radius:9px; cursor:pointer;
+  border:1px solid var(--amber); background:var(--amber); color:var(--amber-ink); text-decoration:none; display:inline-block;
+}
+.btn:hover{ filter:brightness(1.08); }
+.btn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+.btn.ghost{ background:transparent; color:var(--ink-dim); border-color:var(--line); }
+
+@media (max-width:560px){ .wrap{ padding:36px 16px 20px; } .card{ padding:18px; } }
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
