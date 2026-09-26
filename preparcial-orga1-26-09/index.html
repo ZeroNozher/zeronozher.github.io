@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulacro resuelto — Organización de Computadoras I · PreParcial 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="mark">02</span><span class="title">Organización de Computadoras I</span></div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" aria-label="Puntos">
+    <p class="side-label">PreParcial 2</p>
+    <a class="side-link" href="#p1"><span class="dot"></span>Punto 1</a>
+    <a class="side-link" href="#p2"><span class="dot"></span>Punto 2</a>
+    <a class="side-link" href="#p3"><span class="dot"></span>Punto 3</a>
+    <a class="side-link" href="#p4"><span class="dot"></span>Punto 4</a>
+    <a class="side-link" href="#p5"><span class="dot"></span>Punto 5</a>
+    <a class="side-link" href="#p6"><span class="dot"></span>Punto 6</a>
+    <a class="side-link" href="#p7"><span class="dot"></span>Punto 7</a>
+    <a class="side-link" href="#p8"><span class="dot"></span>Punto 8</a>
+    <a class="side-link" href="#p9"><span class="dot"></span>Punto 9</a>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <p class="kicker">Guía resuelta · PreParcial "2" Orga1</p>
+      <h1>Los 9 puntos del parcial, con el desarrollo completo</h1>
+      <p>Mismo orden y mismos enunciados que el simulacro. Cada tarjeta se abre y muestra la resolución paso a paso, con las tablas y agrupamientos de bits necesarios para llegar al resultado.</p>
+    </section>
+
+    <!-- PUNTO 1 -->
+    <section class="section" id="p1">
+      <div class="section-head"><span class="section-num">Punto 1</span></div>
+      <h2>Aritmética en base r</h2>
+      <p class="desc">Restar en otra base es el mismo algoritmo de préstamo que en base 10; solo cambia cuánto vale cada posición.</p>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">1 · A</span><div class="statement">En base 16: <span class="expr">2000,00 − 0,002</span></div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Alinear decimales</div><div class="step-body"><code>2000,000 − 0000,002</code>.</div></li>
+            <li><div class="step-title">Restar con préstamo</div><div class="step-body">El último dígito es <code>0−2</code>: no alcanza, y como todos los dígitos intermedios son 0, el préstamo se propaga hasta el primer dígito no nulo (el 2 de los millares), convirtiendo cada 0 de por medio en <code>F</code> (base menos 1).</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">1FFF,FFE</span></div>
+        </div>
+      </details>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">1 · B</span><div class="statement">En base 8: <span class="expr">04444,44 − 0,02</span></div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Parte fraccionaria</div><div class="step-body">Último dígito: <code>4−2=2</code>, sin pedir prestado. Dígito anterior: <code>4−0=4</code>.</div></li>
+            <li><div class="step-title">Parte entera</div><div class="step-body">No hubo préstamo hacia la parte entera: <code>4444</code> queda igual.</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">04444,42</span></div>
+        </div>
+      </details>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">1 · C</span><div class="statement">En base 4: <span class="expr">2222,00 − 0,02</span></div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Última posición fraccionaria</div><div class="step-body"><code>0−2</code> no alcanza: se pide prestado y queda <code>4−2=2</code>.</div></li>
+            <li><div class="step-title">Primera posición fraccionaria</div><div class="step-body">Debe entregar el préstamo: <code>0−0−1</code> tampoco alcanza, pide prestado a la parte entera y queda <code>4−1=3</code>.</div></li>
+            <li><div class="step-title">Parte entera</div><div class="step-body">El préstamo llega al último dígito: <code>2−1=1</code>. Los demás (2,2,2) no cambian.</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">2221,32</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PUNTO 2 -->
+    <section class="section" id="p2">
+      <div class="section-head"><span class="section-num">Punto 2</span></div>
+      <h2>Punto flotante simple precisión (float32)</h2>
+      <p class="desc">Se resuelve «hacia adelante» (decimal → float32) y luego «hacia atrás» (float32 → decimal), mostrando cada paso. Forma normalizada: <code>1,m × 2<sup>e</sup> = N</code>, con exponente sesgado <code>E = e + 127</code>.</p>
+
+      <details class="exercise"><summary><div class="sum-left"><span class="badge">2 · A</span><div class="statement">Pasar <span class="expr">A = (132,625)10PF</span> a <span class="expr">(A)16PFSP</span> y comprobar que sea correcto (pasando 16PFSP a 10).</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <div class="dir-title">Camino de ida · decimal → float32</div>
+          <ol class="steps">
+            <li><div class="step-title">Signo</div><div class="step-body"><code>A</code> es positivo → <code>s = 0</code>.</div></li>
+            <li><div class="step-title">Magnitud a binario, directamente</div><div class="step-body">Parte entera: <code>132 = 128+4 = 10000100₂</code>. Parte fraccionaria: <code>0,625 × 2 = 1,25 → 1</code>; <code>0,25 × 2 = 0,5 → 0</code>; <code>0,5 × 2 = 1,0 → 1</code> (termina exacto).</div>
+              <div class="step-body">Magnitud en binario: <code>10000100,101₂</code>.</div></li>
+            <li><div class="step-title">Exponente real: mover la coma hasta el 1 más significativo</div><div class="step-body">El 1 más significativo está en la posición <code>2⁷</code>, así que la coma se corre <b>7 lugares</b> a la izquierda: <code>e = 7</code>. Exponente sesgado: <code>E = e + 127 = 134</code>.</div>
+              <div class="example"><div class="ladder"><div class="row"><span>134 ÷ 2 =</span><span class="r">67</span><span>resto 0</span></div><div class="row"><span>67 ÷ 2 =</span><span class="r">33</span><span>resto 1</span></div><div class="row"><span>33 ÷ 2 =</span><span class="r">16</span><span>resto 1</span></div><div class="row"><span>16 ÷ 2 =</span><span class="r">8</span><span>resto 0</span></div><div class="row"><span>8 ÷ 2 =</span><span class="r">4</span><span>resto 0</span></div><div class="row"><span>4 ÷ 2 =</span><span class="r">2</span><span>resto 0</span></div><div class="row"><span>2 ÷ 2 =</span><span class="r">1</span><span>resto 0</span></div><div class="row"><span>1 ÷ 2 =</span><span class="r">0</span><span>resto 1</span></div></div></div>
+              <div class="step-body">De abajo hacia arriba: <code>E = 10000110</code> (8 bits).</div></li>
+            <li><div class="step-title">Mantisa y fórmula</div><div class="step-body">Con la coma movida queda <code>1,0000100101</code>. La mantisa son los dígitos después de la coma (el 1 inicial es implícito), completados con ceros a la derecha hasta 23 bits.</div>
+              <div class="example"><div class="cap">m (10 bits + 13 ceros de relleno)</div><div class="bitrow"><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">1</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div><div class="bit b-ghost">0</div></div></div>
+              <div class="step-body">Fórmula: <code>1,0000100101₂ × 2⁷ = 132,625</code>.</div></li>
+            <li><div class="step-title">Armar la palabra de 32 bits y pasar a hexadecimal</div>
+              <div class="example"><div class="byterow"><div class="byte-block"><div class="bits"><div class="bit b-sign">0</div></div><div class="lab">signo · 1 bit</div></div><div class="byte-block"><div class="bits"><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">1</div><div class="bit b-int">0</div></div><div class="lab">exponente E · 8 bits</div></div><div class="byte-block"><div class="bits"><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div></div><div class="lab">mantisa m · 23 bits</div></div></div></div>
+              <div class="step-body">Agrupando de a 4 bits:</div>
+              <div class="example"><div class="table-scroll"><table class="grouptable"><tr><th>4 bits</th><td>0100</td><td>0011</td><td>0000</td><td>0100</td><td>1010</td><td>0000</td><td>0000</td><td>0000</td></tr><tr><th>hex</th><td>4</td><td>3</td><td>0</td><td>4</td><td>A</td><td>0</td><td>0</td><td>0</td></tr></table></div></div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">(A)16PFSP = 43040000</span></div>
+          <div class="answer alt"><span class="lbl">binario</span><span class="val">0 · 10000110 · 00001001010000000000000</span></div>
+
+          <div class="dir-title">Comprobación · camino inverso, float32 → decimal</div>
+          <ol class="steps">
+            <li><div class="step-title">Hexadecimal a binario y separar campos</div><div class="step-body"><code>43040000₁₆ → 0100 0011 0000 0100 1010 0000 0000 0000</code>. Signo <code>s=0</code>, exponente <code>E=10000110</code>, mantisa <code>m=00001001010000000000000</code>.</div></li>
+            <li><div class="step-title">Exponente sesgado a decimal</div><div class="step-body"><code>E = 10000110₂ = 128+4+2 = 134</code>.</div></li>
+            <li><div class="step-title">Exponente real</div><div class="step-body"><code>e = E − 127 = 7</code>: la coma se corre 7 lugares a la derecha.</div></li>
+            <li><div class="step-title">Reconstruir 1,m y mover la coma</div><div class="step-body">Se antepone el 1 implícito y se descartan los ceros de relleno: <code>1,0000100101</code> → corriendo la coma 7 lugares a la derecha: <code>10000100,101₂</code>.</div></li>
+            <li><div class="step-title">Binario a decimal</div><div class="step-body">Parte entera: <code>10000100₂ = 128+4 = 132</code>. Parte fraccionaria: <code>0,101₂ = 0,5+0,125 = 0,625</code>. Con <code>s=0</code> (positivo): <code>132,625</code>, igual al número de partida.</div></li>
+          </ol>
+          <div class="answer alt"><span class="lbl">comprobación</span><span class="val">132,625 = A ✓</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PUNTO 3 -->
+    <section class="section" id="p3">
+      <div class="section-head"><span class="section-num">Punto 3</span></div>
+      <h2>Unidades de almacenamiento</h2>
+      <p class="desc">Llevar todo a la misma unidad antes de operar.</p>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">3 · A</span><div class="statement">USB de <span class="expr">16 GB</span>, un juego de <span class="expr">80000 Megabits</span> y un parche de actualización de <span class="expr">2048 Kilobytes</span>. ¿Cuántos MBytes libres quedan?</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Fijar las equivalencias y la unidad común</div><div class="step-body">1 Byte = 8 bits; para capacidades de memoria (GB, MB, KB) se usa la convención binaria: <code>1 KB = 1024 B</code>, <code>1 MB = 1024 KB</code>, <code>1 GB = 1024 MB</code>. Trabajamos todo en MBytes. Capacidad del USB: <code>16 GB × 1024 = 16.384 MBytes</code>.</div></li>
+            <li><div class="step-title">Juego: Megabits → MBytes</div><div class="step-body">Los bits se pasan a bytes dividiendo por 8, sin importar el prefijo: <code>80000 Mbits ÷ 8 = 10.000 MBytes</code>.</div></li>
+            <li><div class="step-title">Parche: KBytes → MBytes</div><div class="step-body"><code>2048 KB ÷ 1024 = 2 MBytes</code>.</div></li>
+            <li><div class="step-title">Sumar lo ocupado y restar de la capacidad</div><div class="step-body">Ocupado: <code>10.000 + 2 = 10.002 MBytes</code>. Libre: <code>16.384 − 10.002 = 6382 MBytes</code>.</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">espacio libre</span><span class="val">6382 MBytes</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PUNTO 4 -->
+    <section class="section" id="p4">
+      <div class="section-head"><span class="section-num">Punto 4</span></div>
+      <h2>Representaciones con signo</h2>
+      <p class="desc">El mismo número, codificado con las dos técnicas de la materia: complemento a 2 y exceso a K, para un ancho de 10 bits.</p>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">4 · A</span><div class="statement">Hallar <span class="expr">(A)2EK</span> de <span class="expr">(A)₁₀ = −305</span>, sistema de 10 bits.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Definir K</div><div class="step-body">Con n = 10 bits, <code>K = 2ⁿ⁻¹ = 2⁹ = 512</code>.</div></li>
+            <li><div class="step-title">Sumar K al número con signo</div><div class="step-body"><code>−305 + 512 = 207</code>. Ese valor se codifica como binario puro.</div></li>
+            <li><div class="step-title">207 a binario de 10 bits</div><div class="step-body"><code>207 = 128+64+8+4+2+1</code></div>
+              <div class="example"><div class="bitrow"><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div></div></div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">0011001111</span></div>
+        </div>
+      </details>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">4 · B</span><div class="statement">Hallar <span class="expr">(A)2C2</span> de <span class="expr">(A)₁₀ = 305</span>, sistema de 10 bits.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Binario de 305 en 10 bits</div><div class="step-body"><code>305 = 256+32+16+1</code></div>
+              <div class="example"><div class="bitrow"><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div></div></div></li>
+            <li><div class="step-title">Como el número es positivo</div><div class="step-body">En complemento a 2, todo número positivo se representa igual que en binario puro: el bit de signo queda en 0 sin invertir ni sumar nada.</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">0100110001</span></div>
+        </div>
+      </details>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">4 · C</span><div class="statement">Hallar <span class="expr">(A)2C2</span> de <span class="expr">(A)₁₀ = −305</span>, sistema de 10 bits.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Partir del binario de la magnitud (305)</div>
+              <div class="example"><div class="bitrow"><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div></div></div></li>
+            <li><div class="step-title">Invertir todos los bits (complemento a 1)</div>
+              <div class="example"><div class="bitrow"><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div></div></div></li>
+            <li><div class="step-title">Sumar 1</div><div class="step-body">El bit más a la izquierda queda en 1: bit de signo, negativo.</div>
+              <div class="example"><div class="bitrow"><div class="bit b-sign">1</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">1</div><div class="bit b-int">1</div><div class="bit b-int">1</div></div>
+              <div class="legend"><span><i style="background:var(--rose)"></i>bit de signo</span><span><i style="background:var(--amber)"></i>magnitud codificada</span></div></div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">1011001111</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PUNTO 5 -->
+    <section class="section" id="p5">
+      <div class="section-head"><span class="section-num">Punto 5</span></div>
+      <h2>Suma en punto fijo, formatos Q0,6,4 y Q1,4,3</h2>
+      <p class="desc">Dos formatos distintos: uno sin signo (Q0,6,4) y otro con signo en complemento a 2 (Q1,4,3). En ambos: representar A y B, sumar como enteros y reubicar la coma.</p>
+
+      <details class="exercise"><summary><div class="sum-left"><span class="badge">5 · A</span><div class="statement">Calcular <span class="expr">(Y)₂ = (A)₂ + (B)₂</span> en formato Q0,6,4, con <span class="expr">A = 12,25</span> y <span class="expr">B = 22,50</span>.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Leer el formato</div><div class="step-body"><code>Q0,6,4</code>: 0 bits de signo, 6 de parte entera, 4 de parte fraccionaria → 10 bits en total. Rango: <code>0</code> a <code>63,9375</code>; resolución <code>2⁻⁴ = 0,0625</code>.</div></li>
+            <li><div class="step-title">A y B a binario</div><div class="step-body">A: entera <code>12 = 001100</code>, fracción <code>0,25×16 = 4 → 0100</code>. B: entera <code>22 = 010110</code>, fracción <code>0,50×16 = 8 → 1000</code>.</div>
+              <div class="example"><div class="cap">A</div><div class="bitrow"><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-frac">0</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div></div><div class="cap">B</div><div class="bitrow"><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div></div><div class="legend"><span><i style="background:var(--amber)"></i>parte entera (6 bits)</span><span><i style="background:var(--teal)"></i>parte fraccionaria (4 bits)</span></div></div></li>
+            <li><div class="step-title">Sumar como enteros y reubicar la coma</div><div class="step-body">Multiplicando por 16: <code>196 + 360 = 556</code>. En binario de 10 bits: <code>1000101100</code>. Separando 6+4: parte entera <code>100010</code> (34), fracción <code>1100</code> (0,75).</div>
+              <div class="example"><div class="cap">Y</div><div class="bitrow"><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-frac">1</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">0</div></div></div>
+              <div class="step-body">Chequeo: <code>12,25 + 22,50 = 34,75</code>, menor que <code>63,9375</code>: entra en el formato, sin overflow.</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">100010,1100 (34,75)</span></div>
+        </div>
+      </details>
+
+      <details class="exercise"><summary><div class="sum-left"><span class="badge">5 · B</span><div class="statement">Calcular <span class="expr">(Y)₂ = (A)₂ + (B)₂</span> en formato Q1,4,3, con <span class="expr">A = −5,125</span> y <span class="expr">B = −6,25</span>.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Leer el formato</div><div class="step-body"><code>Q1,4,3</code>: 1 bit de signo, 4 de parte entera, 3 de parte fraccionaria → 8 bits en total. Los negativos se codifican en complemento a 2. Rango: <code>−16</code> a <code>15,875</code>; resolución <code>2⁻³ = 0,125</code>. A y B entran en ese rango.</div></li>
+            <li><div class="step-title">Representar A y B</div><div class="step-body">Se multiplica por 2³ = 8 para trabajar con enteros y se pasa a C2 de 8 bits. A: <code>−5,125 × 8 = −41</code>; <code>41 = 00101001</code> → invertir <code>11010110</code> → sumar 1 → <code>11010111</code>. B: <code>−6,25 × 8 = −50</code>; <code>50 = 00110010</code> → invertir <code>11001101</code> → sumar 1 → <code>11001110</code>.</div>
+              <div class="example"><div class="cap">A</div><div class="bitrow"><div class="bit b-sign">1</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-frac">1</div><div class="bit b-frac">1</div><div class="bit b-frac">1</div></div><div class="cap">B</div><div class="bitrow"><div class="bit b-sign">1</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-frac">1</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div></div><div class="legend"><span><i style="background:var(--rose)"></i>bit de signo</span><span><i style="background:var(--amber)"></i>parte entera (4 bits)</span><span><i style="background:var(--teal)"></i>parte fraccionaria (3 bits)</span></div></div></li>
+            <li><div class="step-title">Sumar y descartar el acarreo</div><div class="step-body"><code>11010111 + 11001110 = 1 10100101</code>. El acarreo final se descarta: <code>10100101</code>. No hay overflow: los dos operandos son negativos y el resultado también (bit de signo 1). Equivale a <code>−41 + (−50) = −91</code>, dentro de <code>[−128; 127]</code>.</div></li>
+            <li><div class="step-title">Reubicar la coma y comprobar</div><div class="step-body">Separando 1+4+3: signo <code>1</code>, entera <code>0100</code>, fracción <code>101</code>. Valor: <code>−16 + 4 + 0,625 = −11,375</code>, igual a <code>−5,125 + (−6,25)</code>.</div>
+              <div class="example"><div class="cap">Y</div><div class="bitrow"><div class="bit b-sign">1</div><div class="bit b-int">0</div><div class="bit b-int">1</div><div class="bit b-int">0</div><div class="bit b-int">0</div><div class="bit b-frac">1</div><div class="bit b-frac">0</div><div class="bit b-frac">1</div></div></div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">1 0100,101 (−11,375)</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PUNTO 6 -->
+    <section class="section" id="p6">
+      <div class="section-head"><span class="section-num">Punto 6</span></div>
+      <h2>Rango y capacidad de representación</h2>
+      <p class="desc">Con n bits: cuántos valores distintos entran, y qué rango cubren sin signo y con signo (C2).</p>
+
+      <details class="exercise" open>
+        <summary><div class="sum-left"><span class="badge">6 · A</span><div class="statement">Para un ancho de representación de <span class="expr">11 bits</span>: capacidad, rango sin signo y rango con signo (C2).</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Capacidad de representación</div><div class="step-body">Con n bits hay <code>2ⁿ</code> combinaciones posibles: <code>2¹¹ = 2048</code>.</div></li>
+            <li><div class="step-title">Rango sin signo</div><div class="step-body">De <code>0</code> a <code>2ⁿ−1</code>: <code>0 a 2047</code>.</div></li>
+            <li><div class="step-title">Rango con signo, complemento a 2</div><div class="step-body">De <code>−2ⁿ⁻¹</code> a <code>2ⁿ⁻¹−1</code>: <code>−1024 a 1023</code>. Hay un negativo más que positivos porque el 0 se cuenta del lado positivo.</div></li>
+          </ol>
+          <div class="example"><div class="table-scroll">
+          <table class="pv" style="max-width:460px">
+            <tr><th>capacidad</th><td>2048</td></tr>
+            <tr><th>rango sin signo</th><td>0 a 2047</td></tr>
+            <tr><th>rango con signo (C2)</th><td>−1024 a 1023</td></tr>
+          </table>
+          </div></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PUNTO 7 -->
+    <section class="section" id="p7">
+      <div class="section-head"><span class="section-num">Punto 7</span></div>
+      <h2>Cambio de base</h2>
+      <p class="desc">Tres formas distintas de moverse entre bases: pasaje directo por agrupamiento de bits, el teorema del peso, y una combinación de ambos.</p>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">7 · A</span><div class="statement">Pasar <span class="expr">A = (203,12)₄</span> a decimal, pasando primero por binario.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Base 4 → binario, agrupando de a 2 bits</div>
+              <div class="example"><div class="table-scroll"><table class="grouptable"><tr><th>dígito (base 4)</th><td>2</td><td>0</td><td>3</td><td class="mono">,</td><td>1</td><td>2</td></tr>
+              <tr><th>2 bits</th><td>10</td><td>00</td><td>11</td><td class="mono">,</td><td>01</td><td>10</td></tr></table></div></div>
+              <div class="step-body">Uniendo los grupos: <code>100011,0110</code>.</div></li>
+            <li><div class="step-title">Binario → decimal, por el teorema del peso</div><div class="step-body">Parte entera: <code>100011₂ = 32+2+1 = 35</code>. Parte fraccionaria: <code>0,0110₂ = 1/4+1/8 = 0,375</code>.</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">binario</span><span class="val">100011,0110</span></div>
+          <div class="answer"><span class="lbl">decimal</span><span class="val">35,375</span></div>
+        </div>
+      </details>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">7 · B</span><div class="statement">Pasar <span class="expr">A = (31,13)₅</span> a decimal y comprobar que sea correcto.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Aplicar el teorema del peso</div><div class="step-body">Parte entera: <code>3·5¹ + 1·5⁰ = 15+1 = 16</code>. Parte fraccionaria: <code>1·5⁻¹ + 3·5⁻² = 0,2+0,12 = 0,32</code>.</div></li>
+            <li><div class="step-title">Comprobación: volver de decimal a base 5</div>
+              <div class="example"><div class="ladder">
+                <div class="row"><span>16 ÷ 5 =</span><span class="r">3</span><span>resto 1</span></div>
+                <div class="row"><span>3 ÷ 5 =</span><span class="r">0</span><span>resto 3</span></div>
+              </div></div>
+              <div class="step-body">Restos de abajo hacia arriba: <code>31</code>.</div>
+              <div class="example"><div class="ladder">
+                <div class="row"><span>0,32 × 5 =</span><span class="r">1</span><span>,6 → dígito 1</span></div>
+                <div class="row"><span>0,6 × 5 =</span><span class="r">3</span><span>,0 → dígito 3 (termina exacto)</span></div>
+              </div></div>
+              <div class="step-body">Se recupera <code>31,13</code>, igual al número de partida: comprobado.</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">16,32</span></div>
+        </div>
+      </details>
+
+      <details class="exercise">
+        <summary><div class="sum-left"><span class="badge">7 · C</span><div class="statement">Pasar <span class="expr">A = (5432,06)₈</span> a hexadecimal, pasando primero por binario.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Octal → binario, agrupando de a 3 bits</div>
+              <div class="example"><div class="table-scroll"><table class="grouptable"><tr><th>dígito (base 8)</th><td>5</td><td>4</td><td>3</td><td>2</td><td class="mono">,</td><td>0</td><td>6</td></tr>
+              <tr><th>3 bits</th><td>101</td><td>100</td><td>011</td><td>010</td><td class="mono">,</td><td>000</td><td>110</td></tr></table></div></div>
+              Binario: <code>101100011010,000110</code>.</li>
+            <li><div class="step-title">Binario → hexadecimal, agrupando de a 4 bits</div><div class="step-body">La parte entera se agrupa de derecha a izquierda desde la coma, y la fraccionaria de izquierda a derecha:</div>
+              <div class="example"><div class="table-scroll"><table class="grouptable"><tr><th>4 bits (entera)</th><td>1011</td><td>0001</td><td>1010</td></tr><tr><th>hex</th><td>B</td><td>1</td><td>A</td></tr></table></div>
+              <div class="table-scroll"><table class="grouptable"><tr><th>4 bits (fracción)</th><td>0001</td><td>1000</td></tr><tr><th>hex</th><td>1</td><td>8</td></tr></table></div></div>
+            </li>
+            <li><div class="step-title">Verificación cruzada en decimal</div><div class="step-body">Octal: <code>5432,06₈ = 2842,09375</code>. Hex: <code>B1A,18₁₆ = 2842,09375</code>. Coinciden.</div></li>
+          </ol>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">B1A,18</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PUNTO 8 -->
+    <section class="section" id="p8">
+      <div class="section-head"><span class="section-num">Punto 8</span></div>
+      <h2>Endianismo</h2>
+      <p class="desc">Una variable float32 (32 bits = 4 bytes) se guarda en una memoria de registros de 8 bits, así que necesita 4 direcciones consecutivas. El orden en que se acomodan los bytes depende de la convención de la arquitectura.</p>
+
+      <details class="exercise"><summary><div class="sum-left"><span class="badge">8 · A</span><div class="statement">Para el PFSP dado (MSByte = <span class="expr">CB</span>, luego <span class="expr">73</span>, <span class="expr">67</span>, LSByte = <span class="expr">98</span>): ¿cuál es el orden correcto para <b>Little Endian</b>?</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Separar la palabra de 32 bits en 4 bytes</div>
+              <div class="example"><div class="byterow"><div class="byte-block"><div class="bits"><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div></div><div class="lab">MSByte = CB</div></div><div class="byte-block"><div class="bits"><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div></div><div class="lab">73</div></div><div class="byte-block"><div class="bits"><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div></div><div class="lab">67</div></div><div class="byte-block"><div class="bits"><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">1</div><div class="bit b-plain">1</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div><div class="bit b-plain">0</div></div><div class="lab">LSByte = 98</div></div></div></div></li>
+            <li><div class="step-title">Little-endian guarda primero el byte menos significativo</div><div class="step-body">En la dirección 0000 va el LSByte (<code>98</code>) y en la última dirección el MSByte (<code>CB</code>), quedando en orden creciente de significancia.</div></li>
+          </ol>
+          <div class="example"><div class="table-scroll"><table class="memtable"><tr><th>Dirección</th><th>Contenido</th><th>Byte</th></tr><tr class="first"><td>0000</td><td>LSByte (bits 7-0)</td><td class="hex">98</td></tr><tr><td>0001</td><td>bits 15-8</td><td class="hex">67</td></tr><tr><td>0010</td><td>bits 23-16</td><td class="hex">73</td></tr><tr><td>0011</td><td>MSByte (bits 31-24)</td><td class="hex">CB</td></tr></table></div></div>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">0000→10011000 | 0001→01100111 | 0010→01110011 | 0011→11001011</span></div>
+        </div>
+      </details>
+
+      <details class="exercise"><summary><div class="sum-left"><span class="badge">8 · B</span><div class="statement">¿Cuál es el orden correcto para <b>Big Endian</b>?</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Big-endian guarda primero el byte más significativo</div><div class="step-body">En la dirección 0000 va el MSByte (<code>CB</code>) y en la última dirección el LSByte (<code>98</code>).</div></li>
+          </ol>
+          <div class="example"><div class="table-scroll"><table class="memtable"><tr><th>Dirección</th><th>Contenido</th><th>Byte</th></tr><tr class="first"><td>0000</td><td>MSByte (bits 31-24)</td><td class="hex">CB</td></tr><tr><td>0001</td><td>bits 23-16</td><td class="hex">73</td></tr><tr><td>0010</td><td>bits 15-8</td><td class="hex">67</td></tr><tr><td>0011</td><td>LSByte (bits 7-0)</td><td class="hex">98</td></tr></table></div></div>
+          <div class="answer"><span class="lbl">resultado</span><span class="val">0000→11001011 | 0001→01110011 | 0010→01100111 | 0011→10011000</span></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PUNTO 9 -->
+    <section class="section" id="p9">
+      <div class="section-head"><span class="section-num">Punto 9</span></div>
+      <h2>Códigos ASCII</h2>
+      <p class="desc">Cada código decimal corresponde a un carácter de la tabla ASCII estándar.</p>
+      <details class="exercise"><summary><div class="sum-left"><span class="badge">Punto 9</span><div class="statement">Convertir la secuencia <span class="expr">065 103 117 097 110 116 101 032 108 097 032 109 097 116 101 114 105 097 032 079 114 103 097 032 049</span> en una cadena de texto.</div></div><span class="chev">+</span></summary>
+        <div class="solution">
+          <ol class="steps">
+            <li><div class="step-title">Buscar cada código en la tabla ASCII</div><div class="step-body">Referencias: las mayúsculas empiezan en 65 (A), las minúsculas en 97 (a), el espacio es 32. Cada letra es la base más un desplazamiento.</div></li>
+            <li><div class="step-title">Descifrar carácter por carácter</div><div class="step-body">Pulsa <b>Descifrar</b> y mira cómo cada código se convierte en su carácter.</div></li>
+          </ol>
+          <div class="decoder" id="decoder" data-codes="065 103 117 097 110 116 101 032 108 097 032 109 097 116 101 114 105 097 032 079 114 103 097 032 049"><div class="decoder-bar"><button class="btn" id="dec-go" type="button">Descifrar</button><button class="btn ghost" id="dec-reset" type="button">Reiniciar</button></div><div class="cipher" id="dec-cells"></div><p class="dec-caption" id="dec-cap"></p><div class="decoded-line" id="dec-out" aria-hidden="true"></div></div>
+          <div class="answer msg"><span class="lbl">resultado</span><span class="val" id="dec-res" aria-live="polite">????????</span></div>
+        </div>
+      </details>
+    </section>
+
+  </main>
+</div>
+
+<footer>Guía resuelta del simulacro final — Organización de Computadoras I · PreParcial 2.</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
